@@ -30,13 +30,8 @@ symbolLinks.forEach((link) => {
     link.href = symbolUrl.href
 })
 
-currencySelect.addEventListener("change", () => {
-    commonUrl.searchParams.set(QueryParams.Currency, currencySelect.value)
-
-    location.href = commonUrl.href
-})
-
 dateUpdateButton.addEventListener("click", () => {
+    commonUrl.searchParams.set(QueryParams.Currency, currencySelect.value)
     commonUrl.searchParams.set(QueryParams.DateFrom, dateFromInput.value)
     commonUrl.searchParams.set(QueryParams.DateTo, dateToInput.value)
 
