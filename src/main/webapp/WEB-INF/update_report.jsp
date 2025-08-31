@@ -8,7 +8,7 @@
             Please Wait...
         </div>
         <div id="responseCaptionOk" class="response response__ok">
-            Database updated succesfully
+            Database updated successfully
         </div>
         <div id="responseCaptionError" class="response response__error">
             Database update error

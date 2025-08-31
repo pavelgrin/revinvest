@@ -77,7 +77,7 @@ fileUploadButton.addEventListener("click", async () => {
     fileInput.value = ""
 
     try {
-        const res = await fetch("/update", { method: "POST", body: formData }) 
+        const res = await fetch("/update", { method: "POST", body: formData })
 
         if (res.ok) {
             localStorage.setItem("uploaded", true)
