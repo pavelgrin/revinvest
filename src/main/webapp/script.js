@@ -1,12 +1,5 @@
 // -----------------------------------------------------------------------------
 // Handle query building
-const QueryParams = Object.freeze({
-    DateFrom: "from",
-    DateTo: "to",
-    Symbol: "symbol",
-    Currency: "currency",
-})
-
 const dateFromInput = document.getElementById("dateFromInput")
 const dateToInput = document.getElementById("dateToInput")
 const dateUpdateButton = document.getElementById("dateUpdateButton")
@@ -24,17 +17,28 @@ const symbolUrl = new URL(location.href)
 
 symbolLinks.forEach((link) => {
     symbolUrl.searchParams.set(
-        QueryParams.Symbol,
-        link.getAttribute(QueryParams.Symbol)
+        __QUERY_PARAMS__.Symbol,
+        link.getAttribute(__QUERY_PARAMS__.Symbol)
     )
     link.href = symbolUrl.href
 })
 
 dateUpdateButton.addEventListener("click", () => {
-    commonUrl.searchParams.set(QueryParams.Currency, currencySelect.value)
-    commonUrl.searchParams.set(QueryParams.DateFrom, dateFromInput.value)
-    commonUrl.searchParams.set(QueryParams.DateTo, dateToInput.value)
-
+    if (currencySelect.value) {
+        commonUrl.searchParams.set(__QUERY_PARAMS__.Currency, currencySelect.value)
+    } else {
+        commonUrl.searchParams.delete(__QUERY_PARAMS__.Currency)
+    }
+    if (dateFromInput.value) {
+        commonUrl.searchParams.set(__QUERY_PARAMS__.DateFrom, dateFromInput.value)
+    } else {
+        commonUrl.searchParams.delete(__QUERY_PARAMS__.DateFrom)
+    }
+    if (dateToInput.value) {
+        commonUrl.searchParams.set(__QUERY_PARAMS__.DateTo, dateToInput.value)
+    } else {
+        commonUrl.searchParams.delete(__QUERY_PARAMS__.DateTo)
+    }
     location.href = commonUrl.href
 })
 // -----------------------------------------------------------------------------

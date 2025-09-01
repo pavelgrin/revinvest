@@ -7,35 +7,7 @@
     <div class="info">
         <div class="title">Profit and Loss Statement (${baseReport.symbol})</div>
         <div class="summary">
-            <div class="summaryRow">
-                <div class="summaryLabel">Period</div>
-                <div class="summaryValue">
-                    <label for="dateFromInput" aria-label="Date From"></label>
-                    <input
-                        type="date"
-                        id="dateFromInput"
-                        required
-                    >
-                    <span>-</span>
-                    <label for="dateToInput" aria-label="Date To"></label>
-                    <input
-                        type="date"
-                        id="dateToInput"
-                        required
-                    >
-                    <button id="dateUpdateButton">update</button>
-                </div>
-            </div>
-            <div class="summaryRow">
-                <div class="summaryLabel">Currency</div>
-                <div class="summaryValue">
-                    <label for="currencySelect" aria-label="Select Currency"></label>
-                    <select id="currencySelect">
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                    </select>
-                </div>
-            </div>
+            <jsp:include page="filter_form.jsp" />
             <div class="summaryRow">
                 <div class="summaryLabel">Dividends</div>
                 <div class="summaryValue">net: ${tickerReport.dividends}</div>
