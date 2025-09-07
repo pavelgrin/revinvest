@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%--@elvariable id="commonReport" type="net.grinv.revinvest.model.CommonReport"--%>
+<%--@elvariable id="report" type="net.grinv.revinvest.model.Report"--%>
 <%--@elvariable id="generationDate" type="java.lang.String"--%>
 
 <div class="header">
@@ -9,25 +9,25 @@
             <jsp:include page="filter_form.jsp" />
             <div class="summaryRow">
                 <div class="summaryLabel">Balance</div>
-                <div class="summaryValue">${commonReport.balance}</div>
+                <div class="summaryValue">${report.commonReport.balance}</div>
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Dividends</div>
                 <div class="summaryValue">
-                    gross: ${commonReport.dividends.withTax} /
-                    net: ${commonReport.dividends.amount} /
-                    tax: ${commonReport.dividends.tax}
+                    gross: ${report.commonReport.dividends.withTax} /
+                    net: ${report.commonReport.dividends.amount} /
+                    tax: ${report.commonReport.dividends.tax}
                 </div>
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Custody Fee</div>
-                <div class="summaryValue">${commonReport.custodyFee}</div>
+                <div class="summaryValue">${report.commonReport.custodyFee}</div>
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Total (by sells)</div>
                 <div class="summaryValue">
-                    FIFO: ${commonReport.totalFIFO} /
-                    LIFO: ${commonReport.totalLIFO}
+                    FIFO: ${report.commonReport.totalFIFO} /
+                    LIFO: ${report.commonReport.totalLIFO}
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
         <th class="secondRowHeader">FIFO</th>
         <th class="secondRowHeader">LIFO</th>
     </tr>
-    <c:forEach var="item" items="${commonReport.summaryFIFO}" varStatus="status">
+    <c:forEach var="item" items="${report.commonReport.summaryFIFO}" varStatus="status">
     <tr>
         <td class="date">${item.date}</td>
         <td>
@@ -57,10 +57,10 @@
         </td>
         <td>${item.quantityFixed}</td>
         <td>${item.costBasis}</td>
-        <td>${commonReport.summaryLIFO[status.index].costBasis}</td>
+        <td>${report.commonReport.summaryLIFO[status.index].costBasis}</td>
         <td>${item.grossProceeds}</td>
         <td>${item.pnl}</td>
-        <td>${commonReport.summaryLIFO[status.index].pnl}</td>
+        <td>${report.commonReport.summaryLIFO[status.index].pnl}</td>
     </tr>
     </c:forEach>
 </table>

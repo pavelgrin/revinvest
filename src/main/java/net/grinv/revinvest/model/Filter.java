@@ -8,4 +8,8 @@ public record Filter(
     String symbol,
     Currency currency)
 {
+    public boolean hasTicker()
+    {
+        return this.symbol != null;
+    }
 }

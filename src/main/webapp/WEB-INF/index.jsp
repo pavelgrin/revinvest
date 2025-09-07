@@ -1,9 +1,6 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:set var="currencies" value="<%= net.grinv.revinvest.consts.Currency.values() %>" scope="request" />
-
-<%--@elvariable id="baseReport" type="net.grinv.revinvest.model.BaseReport"--%>
-<%--@elvariable id="tickerReport" type="net.grinv.revinvest.model.TickerReport"--%>
-<%--@elvariable id="commonReport" type="net.grinv.revinvest.model.CommonReport"--%>
+<%--@elvariable id="report" type="net.grinv.revinvest.model.Report"--%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,10 +15,10 @@
 <body>
     <div class="content">
         <jsp:include page="update_report.jsp" />
-        <c:if test="${not empty tickerReport}">
+        <c:if test="${not empty report.tickerReport}">
             <jsp:include page="symbol_report.jsp" />
         </c:if>
-        <c:if test="${not empty commonReport}">
+        <c:if test="${not empty report.commonReport}">
             <jsp:include page="common_report.jsp" />
         </c:if>
     </div>
@@ -33,9 +30,9 @@
             Currency: "<%= net.grinv.revinvest.consts.RequestParams.CURRENCY %>",
         });
 
-        const __CURRENCY__ = "${baseReport.currency.code}"
-        const __DATE_FROM__ = "${baseReport.from}"
-        const __DATE_TO__ = "${baseReport.to}"
+        const __CURRENCY__ = "${report.filter.currency.code}"
+        const __DATE_FROM__ = "${report.filter.from}"
+        const __DATE_TO__ = "${report.filter.to}"
     </script>
     <script src="${pageContext.request.contextPath}/script.js"></script>
 </body>
