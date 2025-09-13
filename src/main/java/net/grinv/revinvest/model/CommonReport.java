@@ -2,6 +2,7 @@ package net.grinv.revinvest.model;
 
 import java.util.ArrayList;
 
+
 public final class CommonReport
 {
     private int balance;

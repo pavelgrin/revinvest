@@ -1,6 +1,6 @@
 package net.grinv.revinvest.model;
 
-public class Report
+public final class Report
 {
     private Filter filter;
     private CommonReport commonReport;
@@ -13,12 +13,5 @@ public class Report
     public void setCommonReport(CommonReport report) { this.commonReport = report; }
 
     public TickerReport getTickerReport() { return this.tickerReport; }
-    public void setTickerReport(TickerReport report)
-
-
-
-
-    {
-        this.tickerReport = report;
-    }
+    public void setTickerReport(TickerReport report) { this.tickerReport = report; }
 }

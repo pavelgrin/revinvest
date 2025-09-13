@@ -8,7 +8,8 @@ public record SummaryItem(
     int grossProceeds,
     int pnl)
 {
-    public String getQuantityFixed() {
+    public String getQuantityFixed()
+    {
         return String.format("%.8f", this.quantity);
     }
 }
