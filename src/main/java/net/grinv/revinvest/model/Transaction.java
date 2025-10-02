@@ -10,10 +10,10 @@ public record Transaction(
     int timestamp,
     String ticker,
     Type type,
-    int quantity,
-    int pricePerShare,
-    int amount,
+    float quantity,
+    float pricePerShare,
+    float amount,
     Currency currency,
-    int fxRate)
+    float fxRate)
 {
 }

@@ -1,18 +1,31 @@
 package net.grinv.revinvest.service;
 
-import net.grinv.revinvest.model.CommonReport;
-import net.grinv.revinvest.model.Filter;
-import net.grinv.revinvest.model.Report;
-import net.grinv.revinvest.model.TickerReport;
+import net.grinv.revinvest.model.*;
+import net.grinv.revinvest.repository.TransactionRepository;
+import net.grinv.revinvest.utils.DateTime;
 
-public class ReportService
+import java.util.List;
+
+
+public final class ReportService
 {
-    public Report generate(Filter filter)
+    private final TransactionRepository transactionRepository;
+    
+    public ReportService(TransactionRepository repo)
     {
+        this.transactionRepository = repo;
+    }
+    
+    public Report generate(Filter rawFilter)
+    {
+        Filter filter = this.normalizeFilter(rawFilter);
         Report report = new Report();
-
+        
         report.setFilter(filter);
 
+        List<Transaction> transactions = transactionRepository.getAllTransactions();
+        System.out.println("Total transactions: " + transactions.size());
+        
         if (filter.hasTicker())
         {
             report.setTickerReport(new TickerReport());
@@ -21,7 +34,28 @@ public class ReportService
         {
             report.setCommonReport(new CommonReport());
         }
-
+        
         return report;
+    }
+    
+    private Filter normalizeFilter(Filter filter)
+    {
+        String from = filter.from() == null || filter.from().isEmpty()
+            ? this.getFirstTransactionDate()
+            : filter.from();
+        String to = filter.to() == null || filter.to().isEmpty()
+            ? this.getLatestTransactionDate()
+            : filter.to();
+        return new Filter(from, to, filter.symbol(), filter.currency());
+    }
+    
+    private String getFirstTransactionDate()
+    {
+        return DateTime.getDate("");
+    }
+    
+    private String getLatestTransactionDate()
+    {
+        return DateTime.getDate("");
     }
 }

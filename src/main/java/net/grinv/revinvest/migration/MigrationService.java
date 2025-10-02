@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public final class MigrationService
 {
     // TODO: Move to env
-    private final static String SQL_MIGRATION_DIR = "/migrations/";
-    private final static String DB_URL = "jdbc:sqlite:src/main/resources/transactions.db";
+    private static final String SQL_MIGRATION_DIR = "/migrations/";
+    private static final String DB_URL = "jdbc:sqlite:src/main/resources/transactions.db";
     
     private final List<Map.Entry<String, String>> migrationFiles = List.of(Map.entry(
         "v1_create_transactions_table.sql", "u1_create_transactions_table.sql"));
@@ -50,9 +50,14 @@ public final class MigrationService
         }
     }
     
+    private Connection connect() throws SQLException
+    {
+        return DriverManager.getConnection(DB_URL);
+    }
+    
     private void up() throws SQLException
     {
-        try (Connection connection = DriverManager.getConnection(DB_URL);)
+        try (Connection connection = connect())
         {
             // TODO: Add and use logger service
             System.out.println("DB connected at " + DB_URL);
@@ -81,7 +86,7 @@ public final class MigrationService
     
     private void down() throws SQLException
     {
-        try (Connection connection = DriverManager.getConnection(DB_URL);)
+        try (Connection connection = connect())
         {
             // TODO: Add and use logger service
             System.out.println("DB connected at " + DB_URL);
