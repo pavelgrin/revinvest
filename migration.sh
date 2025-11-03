@@ -7,6 +7,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 PROJECT_ROOT="${SCRIPT_DIR}"
 VENV_PATH="${PROJECT_ROOT}/data/.venv"
+REQ_PATH="${PROJECT_ROOT}/data/requirements.txt"
 PYTHON_SCRIPT="${PROJECT_ROOT}/data/migration_tool.py"
 
 if ! command -v python3 &> /dev/null; then
@@ -27,6 +28,7 @@ fi
 
 echo "Activating venv and running the script..."
 source "${ACTIVATE_SCRIPT}"
+pip install -r "${REQ_PATH}"
 "${PYTHON_EXEC}" "${PYTHON_SCRIPT}" "$1" --root-dir "${PROJECT_ROOT}"
 
 echo "Deactivating virtual environment"

@@ -4,9 +4,12 @@ import sqlite3
 import sys
 from typing import List, Tuple, Optional
 
-# TODO: Use env for this consts
-SQL_MIGRATION_DIR = "data/migrations"
-DB_FILE = "data/transactions.db"
+from dotenv import load_dotenv
+
+
+load_dotenv()
+SQL_MIGRATION_DIR = os.getenv("DB_MIGRATION_PATH")
+DB_FILE = os.getenv("DB_HOST_PATH")
 
 class MigrationTool:
     """Tool to manage database migrations (up/down) for an SQLite database"""

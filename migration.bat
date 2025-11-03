@@ -3,6 +3,7 @@ setlocal
 
 set PROJECT_ROOT=%~dp0
 set VENV_PATH=%PROJECT_ROOT%data\.venv
+set REQ_PATH=%PROJECT_ROOT%data\requirements.txt
 set PYTHON_SCRIPT=%PROJECT_ROOT%data\migration_tool.py
 
 where py -3 --version >nul 2>nul
@@ -24,6 +25,7 @@ if exist %VENV_PATH%\Scripts\activate.bat (
 
 echo Activating venv and running the script...
 call %ACTIVATE_SCRIPT%
+pip install -r %REQ_PATH%
 %PYTHON_EXEC% %PYTHON_SCRIPT% %1 --root-dir "%PROJECT_ROOT%"
 
 echo Deactivating virtual environment
