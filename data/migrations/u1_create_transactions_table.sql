@@ -1,1 +1,1 @@
-drop table Statement;
+DROP TABLE Statement;

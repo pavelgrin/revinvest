@@ -6,10 +6,10 @@ from typing import List, Tuple, Optional
 
 from dotenv import load_dotenv
 
-
 load_dotenv()
 SQL_MIGRATION_DIR = os.getenv("DB_MIGRATION_PATH")
 DB_URL = os.getenv("DB_HOST_PATH")
+
 
 class MigrationTool:
     """Tool to manage database migrations (up/down) for an SQLite database"""
@@ -33,12 +33,12 @@ class MigrationTool:
     def _create_schema_version_table(self, connection: sqlite3.Connection):
         """Creates the SchemaVersion table if it doesn't exist"""
         sql = """
-            CREATE TABLE IF NOT EXISTS SchemaVersion
-            (
-                version TEXT PRIMARY KEY,
-                created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """
+              CREATE TABLE IF NOT EXISTS SchemaVersion
+              (
+                  version TEXT PRIMARY KEY,
+                  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+              )
+              """
 
         connection.execute(sql)
         connection.commit()
@@ -146,6 +146,7 @@ class MigrationTool:
             print(f"Database error during 'down' command: {e}", file=sys.stderr)
         except Exception as e:
             print(f"Unexpected error occurred during 'down' command: {e}", file=sys.stderr)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(allow_abbrev=False, add_help=False)

@@ -1,14 +1,14 @@
-create table Statement
+CREATE TABLE Statement
 (
-    id            integer primary key,
-    isoDate       varchar(255) not null,
-    date          varchar(255) not null,
-    timestamp     integer      not null unique,
-    ticker        varchar(255),
-    type          varchar(255) not null,
-    quantity      real,
-    pricePerShare real,
-    amount        real         not null,
-    currency      varchar(255) not null,
-    fxRate        real         not null
+    id            INTEGER PRIMARY KEY,
+    isoDate       VARCHAR(255) NOT NULL,
+    date          VARCHAR(255) NOT NULL,
+    timestamp     INTEGER      NOT NULL UNIQUE,
+    ticker        VARCHAR(255),
+    type          VARCHAR(255) NOT NULL,
+    quantity      REAL,
+    pricePerShare REAL,
+    amount        REAL         NOT NULL,
+    currency      VARCHAR(255) NOT NULL,
+    fxRate        REAL         NOT NULL
 );

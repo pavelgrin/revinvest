@@ -20,8 +20,8 @@ public final class TransactionRepository
     public List<Transaction> getAllTransactions()
     {
         List<Transaction> transactions = new ArrayList<>();
-        String sql = "select * from Statement";
-        
+        String sql = "SELECT * FROM Statement";
+
         try (Connection connection = connect();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet rs = preparedStatement.executeQuery())
