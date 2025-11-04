@@ -11,14 +11,12 @@ import java.util.List;
 
 public final class TransactionRepository
 {
-    // TODO: Move to env
-    private static final String DB_URL = "jdbc:sqlite:src/main/resources/transactions.db";
-    
     private Connection connect() throws SQLException
     {
-        return DriverManager.getConnection(DB_URL);
+        String dbUrl = System.getenv("DB_URL");
+        return DriverManager.getConnection(dbUrl);
     }
-    
+
     public List<Transaction> getAllTransactions()
     {
         List<Transaction> transactions = new ArrayList<>();

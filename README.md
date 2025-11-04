@@ -2,17 +2,25 @@
 
 Calculation of the buy/sell shares results through the Revolut app. The output is based on a csv-file that is exported from the app
 
-### How to build
+### Prerequisites
 
-```
-# Preparation
-npm install
-npm build
-npm run migration_up
+Before you begin, ensure you have the following installed on your system
 
-# Dev mode (with change watching)
+* **JDK**
+* **Apache Maven**
+* **Docker**
+
+---
+
+## How to Build 
+
+```bash
+# Clean, compile, and package
+mvn clean package
+
+# Run in development mode
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 
-# Prod mode
+# Run in production mode
 docker-compose up
 ```

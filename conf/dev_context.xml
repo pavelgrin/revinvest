@@ -1,0 +1,12 @@
+<Context reloadable="true">
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <WatchedResource>WEB-INF/classes/</WatchedResource>
+    <WatchedResource>WEB-INF/lib/</WatchedResource>
+
+    <Resources>
+        <PreResources
+                className="org.apache.catalina.webresources.DirResourceSet"
+                webAppMount="/WEB-INF/classes"
+                base="/usr/local/tomcat/dev_classes" />
+    </Resources>
+</Context>

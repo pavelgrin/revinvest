@@ -1,12 +1,10 @@
-version: '3.9'
-
+name: revinvest_dev
 services:
-    web:
-        build:
-            context: .
-            dockerfile: ./Dockerfile
-        container_name: revinvest
+    webapp:
+        environment:
+            JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
         ports:
-            - "8080:8080"
+            - "${DEBUG_PORT}:5005"
         volumes:
-            - ./target/app:/usr/local/tomcat/webapps/ROOT
+            - ./conf/dev_context.xml:/usr/local/tomcat/conf/Catalina/localhost/ROOT.xml
+            - ./target/classes:/usr/local/tomcat/dev_classes

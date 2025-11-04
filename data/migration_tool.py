@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 SQL_MIGRATION_DIR = os.getenv("DB_MIGRATION_PATH")
-DB_FILE = os.getenv("DB_HOST_PATH")
+DB_URL = os.getenv("DB_HOST_PATH")
 
 class MigrationTool:
     """Tool to manage database migrations (up/down) for an SQLite database"""
@@ -24,7 +24,7 @@ class MigrationTool:
 
     def __init__(self, root_dir: str):
         self._project_root = root_dir
-        self._db_path = os.path.join(self._project_root, DB_FILE)
+        self._db_path = os.path.join(self._project_root, DB_URL)
 
     def _connect(self) -> sqlite3.Connection:
         """Establishes and returns a connection to the SQLite database"""

@@ -1,13 +1,16 @@
-version: '3.9'
-
+name: revinvest
 services:
-    web:
+    webapp:
+        image: revinvest_webapp:latest
         build:
             context: .
             dockerfile: ./Dockerfile
             args:
-                WAR_FILE: target/app.war
-        container_name: revinvest
+                WAR_FILE: ${WAR_FILE_PATH}
+        container_name: revinvest_webapp
+        environment:
+            DB_URL: ${DB_CONTAINER_PATH}
         ports:
-            - "8080:8080"
-        volumes: []
+            - "${APP_PORT}:8080"
+        volumes:
+            - "./${DB_HOST_PATH}:${DB_CONTAINER_PATH}"
