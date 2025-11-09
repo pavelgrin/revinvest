@@ -2,6 +2,7 @@ name: revinvest_dev
 services:
     webapp:
         environment:
+            LOG_LEVEL: DEBUG # TRACE | DEBUG | INFO | WARN | ERROR | FATAL
             JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
         ports:
             - "${DEBUG_PORT}:5005"
