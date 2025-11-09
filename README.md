@@ -24,6 +24,13 @@ mvn clean package
 
 # Or only recompiling changed source files (for dev mode)
 mvn compile
+
+# To check and fix code style
+mvn spotless:check
+mvn spotless:apply
+
+# Or run everything together
+mvn clean verify
 ```
 
 Use Docker Compose for consistent execution environment

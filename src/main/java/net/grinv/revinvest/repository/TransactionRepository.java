@@ -6,8 +6,12 @@ import java.util.List;
 import net.grinv.revinvest.consts.Currency;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class TransactionRepository {
+    private static final Logger logger = LoggerFactory.getLogger(TransactionRepository.class);
+
     private Connection connect() throws SQLException {
         String dbUrl = System.getenv("DB_URL");
         return DriverManager.getConnection(dbUrl);
@@ -38,8 +42,7 @@ public final class TransactionRepository {
                         isoDate, date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate));
             }
         } catch (SQLException e) {
-            // TODO: Add and use logger service
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
         return transactions;
     }

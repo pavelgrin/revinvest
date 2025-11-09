@@ -4,8 +4,12 @@ import java.util.List;
 import net.grinv.revinvest.model.*;
 import net.grinv.revinvest.repository.TransactionRepository;
 import net.grinv.revinvest.utils.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class ReportService {
+    private static final Logger logger = LoggerFactory.getLogger(ReportService.class);
+
     private final TransactionRepository transactionRepository;
 
     public ReportService(TransactionRepository repo) {
@@ -19,7 +23,7 @@ public final class ReportService {
         report.setFilter(filter);
 
         List<Transaction> transactions = transactionRepository.getAllTransactions();
-        System.out.println("Total transactions: " + transactions.size());
+        logger.debug("Total transactions: {}", transactions.size());
 
         if (filter.hasTicker()) {
             report.setTickerReport(new TickerReport());
