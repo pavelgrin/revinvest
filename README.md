@@ -22,10 +22,13 @@ Use Maven to clean, compile and package the application
 # Full and clean build
 mvn clean package
 
-# Or only recompiling changed source files (for dev mode)
+# Compiling modified source files only (for dev mode)
 mvn compile
 
-# To check and fix code style
+# Compiling and running tests
+mvn test
+
+# Check and fix code style
 mvn spotless:check
 mvn spotless:apply
 
