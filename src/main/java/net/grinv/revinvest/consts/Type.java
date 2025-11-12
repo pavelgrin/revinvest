@@ -38,8 +38,8 @@ public enum Type {
 
         try {
             return Type.valueOf(typeStr.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid typeStr value: {}", typeStr);
+        } catch (IllegalArgumentException error) {
+            logger.error("Invalid typeStr value: {}", typeStr, error);
             return Type.Unknown;
         }
     }

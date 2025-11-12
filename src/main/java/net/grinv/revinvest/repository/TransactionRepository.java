@@ -41,8 +41,8 @@ public final class TransactionRepository {
                 transactions.add(new Transaction(
                         isoDate, date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate));
             }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
+        } catch (SQLException error) {
+            logger.error("", error);
         }
         return transactions;
     }

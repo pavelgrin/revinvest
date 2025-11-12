@@ -32,8 +32,8 @@ public enum Currency {
 
         try {
             return Currency.valueOf(currencyStr.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid currencyStr value: {}", currencyStr);
+        } catch (IllegalArgumentException error) {
+            logger.error("Invalid currencyStr value: {}", currencyStr, error);
             return Currency.USD;
         }
     }
