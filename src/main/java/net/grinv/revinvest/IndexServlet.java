@@ -12,6 +12,7 @@ import net.grinv.revinvest.model.Filter;
 import net.grinv.revinvest.model.Report;
 import net.grinv.revinvest.repository.TransactionRepository;
 import net.grinv.revinvest.service.ReportService;
+import net.grinv.revinvest.utils.DateTime;
 
 @WebServlet("")
 public final class IndexServlet extends HttpServlet {
@@ -33,8 +34,7 @@ public final class IndexServlet extends HttpServlet {
         Filter filter = new Filter(fromParam, toParam, symbolParam, Currency.getCurrencyByString(currencyParam));
         Report report = this.reportService.generate(filter);
 
-        // TODO: Format date time output
-        request.setAttribute("generationDate", java.time.LocalDateTime.now().toString());
+        request.setAttribute("generationDate", DateTime.getCurrentDate());
         request.setAttribute("report", report);
         request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
     }
