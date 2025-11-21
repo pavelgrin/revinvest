@@ -25,9 +25,10 @@ public final class ReportServiceTest {
 
     @Test
     void reportIsNotNull() {
-        Mockito.when(mockRepository.getAllTransactions()).thenReturn(Collections.emptyList());
-
         Filter filter = new Filter("", "", "", Currency.getCurrencyByString(null));
+
+        Mockito.when(mockRepository.getStatement(filter)).thenReturn(Collections.emptyList());
+
         Report report = reportService.generate(filter);
 
         Assertions.assertNotNull(report, "The Report object shouldn't be null");

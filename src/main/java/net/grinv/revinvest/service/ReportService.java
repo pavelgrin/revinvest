@@ -1,9 +1,8 @@
 package net.grinv.revinvest.service;
 
-import java.util.List;
 import net.grinv.revinvest.model.*;
 import net.grinv.revinvest.repository.TransactionRepository;
-import net.grinv.revinvest.utils.DateTime;
+import net.grinv.revinvest.utils.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +21,8 @@ public final class ReportService {
 
         report.setFilter(filter);
 
-        List<Transaction> transactions = transactionRepository.getAllTransactions();
-        logger.debug("Total transactions: {}", transactions.size());
+        // List<Transaction> transactions = transactionRepository.getStatement(filter);
+        // logger.debug("Total transactions: {}", transactions.size());
 
         if (filter.hasTicker()) {
             report.setTickerReport(new TickerReport());
@@ -41,10 +40,10 @@ public final class ReportService {
     }
 
     private String getFirstTransactionDate() {
-        return DateTime.getDate("");
+        return DateTimeUtils.getDate("");
     }
 
     private String getLatestTransactionDate() {
-        return DateTime.getDate("");
+        return DateTimeUtils.getDate("");
     }
 }

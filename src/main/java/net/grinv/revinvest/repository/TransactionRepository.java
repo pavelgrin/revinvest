@@ -1,10 +1,12 @@
 package net.grinv.revinvest.repository;
 
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import net.grinv.revinvest.consts.Currency;
 import net.grinv.revinvest.consts.Type;
+import net.grinv.revinvest.model.Filter;
 import net.grinv.revinvest.model.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +19,11 @@ public final class TransactionRepository {
         return DriverManager.getConnection(dbUrl);
     }
 
-    public List<Transaction> getAllTransactions() {
+    public void updateStatement(InputStream inputStream) {
+        //
+    }
+
+    public List<Transaction> getStatement(Filter filter) {
         List<Transaction> transactions = new ArrayList<>();
         String sql = "SELECT * FROM Statement";
 
