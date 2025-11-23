@@ -1,13 +1,8 @@
 package net.grinv.revinvest.consts;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public enum Currency {
     USD("USD"),
     EUR("EUR");
-
-    private static final Logger logger = LoggerFactory.getLogger(Currency.class);
 
     private final String code;
 
@@ -21,20 +16,10 @@ public enum Currency {
 
     /**
      * Converts currency string to Currency enum or returns default value
-     *
-     * @param currencyStr string from the request
+     * @param currencyStr string that must represent one of the enum items
      * @return corresponding Currency enum
      */
     public static Currency getCurrencyByString(String currencyStr) {
-        if (currencyStr == null || currencyStr.isEmpty()) {
-            return Currency.USD;
-        }
-
-        try {
-            return Currency.valueOf(currencyStr.toUpperCase());
-        } catch (IllegalArgumentException error) {
-            logger.error("Invalid currencyStr value: {}", currencyStr, error);
-            return Currency.USD;
-        }
+        return Currency.valueOf(currencyStr.toUpperCase());
     }
 }

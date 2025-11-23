@@ -1,8 +1,5 @@
 package net.grinv.revinvest.consts;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public enum Type {
     TopUp("CASH TOP-UP"),
     Withdraw("CASH WITHDRAWAL"),
@@ -10,10 +7,7 @@ public enum Type {
     Buy("BUY - MARKET"),
     Sell("SELL - MARKET"),
     CustodyFee("CUSTODY FEE"),
-    StockSplit("STOCK SPLIT"),
-    Unknown("");
-
-    private static final Logger logger = LoggerFactory.getLogger(Type.class);
+    StockSplit("STOCK SPLIT");
 
     private final String label;
 
@@ -27,20 +21,10 @@ public enum Type {
 
     /**
      * Converts type string to Type enum
-     *
-     * @param typeStr string from the request
+     * @param typeStr string that must represent one of the enum items
      * @return corresponding Type enum
      */
     public static Type getTypeByString(String typeStr) {
-        if (typeStr == null || typeStr.isEmpty()) {
-            return Type.Unknown;
-        }
-
-        try {
-            return Type.valueOf(typeStr.toUpperCase());
-        } catch (IllegalArgumentException error) {
-            logger.error("Invalid typeStr value: {}", typeStr, error);
-            return Type.Unknown;
-        }
+        return Type.valueOf(typeStr.toUpperCase());
     }
 }

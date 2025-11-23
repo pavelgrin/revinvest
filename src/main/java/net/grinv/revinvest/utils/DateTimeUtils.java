@@ -11,56 +11,35 @@ public final class DateTimeUtils {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("H:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ss");
-    // TODO: Fix INPUT_FORMAT according actual data
-    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'H:mm:ss[.SSS]");
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'H:mm:ss[.SSS]'Z'");
 
     public static String getCurrentDate() {
         return LocalDate.now().format(DATE_FORMAT);
     }
 
     public static String getDate(String isoDateTime) {
-        LocalDateTime dateTime = safeParse(isoDateTime);
-        return dateTime != null ? dateTime.toLocalDate().format(DATE_FORMAT) : null;
+        LocalDateTime dateTime = LocalDateTime.parse(isoDateTime, INPUT_FORMAT);
+        return dateTime.toLocalDate().format(DATE_FORMAT);
     }
 
     public static String getTime(String isoDateTime) {
-        LocalDateTime dateTime = safeParse(isoDateTime);
-        return dateTime != null ? dateTime.toLocalTime().format(TIME_FORMAT) : null;
+        LocalDateTime dateTime = LocalDateTime.parse(isoDateTime, INPUT_FORMAT);
+        return dateTime.toLocalTime().format(TIME_FORMAT);
     }
 
     public static String getDateTime(String isoDateTime) {
-        LocalDateTime dateTime = safeParse(isoDateTime);
-        return dateTime != null ? dateTime.format(DATE_TIME_FORMAT) : null;
-    }
-
-    public static long getTimestampByDate(String isoDateTime) {
-        return Instant.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        LocalDateTime dateTime = LocalDateTime.parse(isoDateTime, INPUT_FORMAT);
+        return dateTime.format(DATE_TIME_FORMAT);
     }
 
     /**
      * Converts iso date-time string into a millisecond timestamp by consistently assuming the input string represents
      * UTC time.
-     *
-     * @param isoDateTime date-time string (e.g., "2025-11-12T9:58:11")
-     * @return millisecond timestamp (long), or 0 if parsing fails
+     * @param isoDateTime date-time string (e.g., {@code 1970-01-01T00:00:00.000Z})
+     * @return millisecond timestamp ({@code long})
      */
-    public static long getTimestampByDateTimeString(String isoDateTime) {
-        LocalDateTime dateTime = safeParse(isoDateTime);
-        if (dateTime == null) {
-            return 0;
-        }
+    public static long getTimestamp(String isoDateTime) {
+        LocalDateTime dateTime = LocalDateTime.parse(isoDateTime, INPUT_FORMAT);
         return dateTime.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
-    }
-
-    private static LocalDateTime safeParse(String isoDateTime) {
-        if (isoDateTime == null || isoDateTime.isEmpty()) {
-            return null;
-        }
-        try {
-            return LocalDateTime.parse(isoDateTime, INPUT_FORMAT);
-        } catch (DateTimeException error) {
-            logger.error("Could not parse date-time string: {}", isoDateTime, error);
-            return null;
-        }
     }
 }

@@ -6,7 +6,7 @@ import net.grinv.revinvest.consts.Type;
 public record Transaction(
         String isoDate,
         String date,
-        int timestamp,
+        long timestamp,
         String ticker,
         Type type,
         float quantity,
