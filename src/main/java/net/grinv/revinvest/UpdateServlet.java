@@ -8,18 +8,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.InputStream;
 import java.util.List;
-
 import net.grinv.revinvest.model.Transaction;
 import net.grinv.revinvest.repository.TransactionRepository;
 import net.grinv.revinvest.utils.Parser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet("/update")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024, // 1MB
-    maxFileSize = 1024 * 1024 * 10 // 10MB
-)
+        fileSizeThreshold = 1024 * 1024, // 1MB
+        maxFileSize = 1024 * 1024 * 10) // 10MB
 public final class UpdateServlet extends HttpServlet {
-    private final TransactionRepository transactionRepository = new TransactionRepository();
+    private static final Logger logger = LoggerFactory.getLogger(UpdateServlet.class);
+
+    private final TransactionRepository transactionRepository;
+
+    public UpdateServlet() {
+        this.transactionRepository = new TransactionRepository();
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -39,6 +45,7 @@ public final class UpdateServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
             }
         } catch (Exception error) {
+            logger.error("UpdateServlet error", error);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

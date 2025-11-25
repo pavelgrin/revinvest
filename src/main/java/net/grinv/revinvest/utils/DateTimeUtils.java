@@ -2,19 +2,16 @@ package net.grinv.revinvest.utils;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class DateTimeUtils {
-    private static final Logger logger = LoggerFactory.getLogger(DateTimeUtils.class);
-
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("H:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ss");
-    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'H:mm:ss[.SSS]'Z'");
+    private static final DateTimeFormatter INPUT_FORMAT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'H:mm:ss[.[SSSSSS][SSS]]'Z'");
 
     public static String getCurrentDate() {
-        return LocalDate.now().format(DATE_FORMAT);
+        return LocalDateTime.now().format(DATE_TIME_FORMAT);
     }
 
     public static String getDate(String isoDateTime) {
@@ -35,6 +32,7 @@ public final class DateTimeUtils {
     /**
      * Converts iso date-time string into a millisecond timestamp by consistently assuming the input string represents
      * UTC time.
+     *
      * @param isoDateTime date-time string (e.g., {@code 1970-01-01T00:00:00.000Z})
      * @return millisecond timestamp ({@code long})
      */

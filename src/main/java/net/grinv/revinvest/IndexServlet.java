@@ -11,9 +11,13 @@ import net.grinv.revinvest.model.Report;
 import net.grinv.revinvest.repository.TransactionRepository;
 import net.grinv.revinvest.service.ReportService;
 import net.grinv.revinvest.utils.DateTimeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet("")
 public final class IndexServlet extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(IndexServlet.class);
+
     private final ReportService reportService;
 
     public IndexServlet() {
@@ -36,6 +40,7 @@ public final class IndexServlet extends HttpServlet {
             request.setAttribute("report", report);
             request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
         } catch (Exception error) {
+            logger.error("IndexServlet error", error);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

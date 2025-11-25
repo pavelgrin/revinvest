@@ -16,6 +16,7 @@ public enum Currency {
 
     /**
      * Converts currency string to Currency enum or returns default value
+     *
      * @param currencyStr string that must represent one of the enum items
      * @return corresponding Currency enum
      */

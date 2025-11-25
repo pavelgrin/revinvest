@@ -1,5 +1,7 @@
 package net.grinv.revinvest.consts;
 
+import java.util.Arrays;
+
 public enum Type {
     TopUp("CASH TOP-UP"),
     Withdraw("CASH WITHDRAWAL"),
@@ -21,10 +23,17 @@ public enum Type {
 
     /**
      * Converts type string to Type enum
+     *
      * @param typeStr string that must represent one of the enum items
      * @return corresponding Type enum
      */
     public static Type getTypeByString(String typeStr) {
-        return Type.valueOf(typeStr.toUpperCase());
+        if (typeStr == null || typeStr.isBlank()) {
+            throw new IllegalArgumentException("Type cannot be blank");
+        }
+        return Arrays.stream(Type.values())
+                .filter((t) -> t.label.equalsIgnoreCase(typeStr.trim()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No enum constant with value: " + typeStr));
     }
 }
