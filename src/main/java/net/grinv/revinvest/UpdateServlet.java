@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 @WebServlet("/update")
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024, // 1MB
+        fileSizeThreshold = 1024 * 1024 * 10, // 10MB
         maxFileSize = 1024 * 1024 * 10) // 10MB
 public final class UpdateServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(UpdateServlet.class);
@@ -32,13 +32,13 @@ public final class UpdateServlet extends HttpServlet {
         try {
             Part filePart = request.getPart("statement");
             if (filePart == null || filePart.getSize() == 0) {
-                throw new RuntimeException();
+                throw new RuntimeException("Uploadable CSV file is empty");
             }
 
             try (InputStream inputStream = filePart.getInputStream()) {
                 List<Transaction> transactions = Parser.parseCSVReport(inputStream);
                 if (transactions.isEmpty()) {
-                    throw new RuntimeException();
+                    throw new RuntimeException("The CSV file doesn't contain transaction records");
                 }
 
                 transactionRepository.updateStatement(transactions);

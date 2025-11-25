@@ -38,7 +38,7 @@ public final class Parser {
      * <p>Expecting line format (some fields may be empty):<br>
      * {@code Date,Ticker,Type,Quantity,Price per share,Total Amount,Currency,FX Rate}
      *
-     * <p>Date is in ISO format: {@code 1970-01-01T00:00:00.000Z}<br>
+     * <p>Date is in ISO format: {@code 1970-01-01T00:00:00.000[000]Z}<br>
      * FX Rate is EUR/USD currency
      */
     private static Transaction parseTransaction(String line) {
