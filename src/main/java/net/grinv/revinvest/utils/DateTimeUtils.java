@@ -10,8 +10,12 @@ public final class DateTimeUtils {
     private static final DateTimeFormatter INPUT_FORMAT =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'H:mm:ss[.[SSSSSS][SSS]]'Z'");
 
-    public static String getCurrentDate() {
+    public static String getCurrentDateTime() {
         return LocalDateTime.now().format(DATE_TIME_FORMAT);
+    }
+
+    public static String getCurrentDate() {
+        return LocalDateTime.now().format(DATE_FORMAT);
     }
 
     public static String getDate(String isoDateTime) {
@@ -31,13 +35,18 @@ public final class DateTimeUtils {
 
     /**
      * Converts iso date-time string into a millisecond timestamp by consistently assuming the input string represents
-     * UTC time.
+     * UTC time
      *
-     * @param isoDateTime date-time string (e.g., {@code 1970-01-01T00:00:00.000Z})
+     * @param isoDateTime date-time string (e.g., {@code 1970-01-01T00:00:00.000[000]Z})
      * @return millisecond timestamp ({@code long})
      */
     public static long getTimestamp(String isoDateTime) {
         LocalDateTime dateTime = LocalDateTime.parse(isoDateTime, INPUT_FORMAT);
         return dateTime.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
+    }
+
+    public static String getDateByTimestamp(long timestamp) {
+        Instant instant = Instant.ofEpochMilli(timestamp);
+        return instant.atZone(ZoneId.of("UTC")).toLocalDate().format(DATE_FORMAT);
     }
 }

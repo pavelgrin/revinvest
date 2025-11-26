@@ -7,6 +7,7 @@ import net.grinv.revinvest.consts.Currency;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.Filter;
 import net.grinv.revinvest.model.Transaction;
+import net.grinv.revinvest.utils.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,8 @@ public final class TransactionRepository {
         (isoDate, date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
+    private static final String SQL_MIN_TIMESTAMP = "SELECT MIN(timestamp) as timestamp FROM Statement";
+    private static final String SQL_MAX_TIMESTAMP = "SELECT MAX(timestamp) as timestamp FROM Statement";
 
     public TransactionRepository() {
         try {
@@ -64,7 +67,48 @@ public final class TransactionRepository {
     }
 
     /**
-     * Saves {@code Transaction} objects to the database using a single batch transaction
+     * Find the earliest transaction timestamp and convert it to a formatted date string
+     *
+     * @return string in "YYYY-MM-DD" format
+     */
+    public String getFirstTransactionDate() {
+        try (Connection connection = connect();
+                PreparedStatement preparedStatement = connection.prepareStatement(SQL_MIN_TIMESTAMP);
+                ResultSet rs = preparedStatement.executeQuery()) {
+
+            if (rs.next()) {
+                long timestamp = rs.getLong("timestamp");
+                return timestamp > 0 ? DateTimeUtils.getDateByTimestamp(timestamp) : DateTimeUtils.getCurrentDate();
+            }
+            throw new RuntimeException("Failed to get first transaction date");
+        } catch (SQLException error) {
+            throw new RuntimeException("Failed to get first transaction date", error);
+        }
+    }
+
+    /**
+     * Find the latest transaction timestamp and convert it to a formatted date string
+     *
+     * @return string in "YYYY-MM-DD" format
+     */
+    public String getLastTransactionDate() {
+        try (Connection connection = connect();
+                PreparedStatement preparedStatement = connection.prepareStatement(SQL_MAX_TIMESTAMP);
+                ResultSet rs = preparedStatement.executeQuery()) {
+
+            if (rs.next()) {
+                long timestamp = rs.getLong("timestamp");
+                return timestamp > 0 ? DateTimeUtils.getDateByTimestamp(timestamp) : DateTimeUtils.getCurrentDate();
+            }
+            throw new RuntimeException("Failed to get last transaction date");
+        } catch (SQLException error) {
+            throw new RuntimeException("Failed to get last transaction date", error);
+        }
+    }
+
+    /**
+     * Stores {@code Transaction} objects in the database using a single batch transaction. Note that transactions with
+     * the same timestamp will be overwritten
      *
      * @param transactions the list of validated Transaction objects
      */

@@ -2,7 +2,6 @@ package net.grinv.revinvest.service;
 
 import net.grinv.revinvest.model.*;
 import net.grinv.revinvest.repository.TransactionRepository;
-import net.grinv.revinvest.utils.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +14,7 @@ public final class ReportService {
         this.transactionRepository = repo;
     }
 
-    public Report generate(Filter rawFilter) {
-        Filter filter = this.normalizeFilter(rawFilter);
+    public Report generate(Filter filter) {
         Report report = new Report();
 
         report.setFilter(filter);
@@ -31,19 +29,5 @@ public final class ReportService {
         }
 
         return report;
-    }
-
-    private Filter normalizeFilter(Filter filter) {
-        String from = filter.from() == null || filter.from().isEmpty() ? this.getFirstTransactionDate() : filter.from();
-        String to = filter.to() == null || filter.to().isEmpty() ? this.getLatestTransactionDate() : filter.to();
-        return new Filter(from, to, filter.symbol(), filter.currency());
-    }
-
-    private String getFirstTransactionDate() {
-        return DateTimeUtils.getDate("");
-    }
-
-    private String getLatestTransactionDate() {
-        return DateTimeUtils.getDate("");
     }
 }
