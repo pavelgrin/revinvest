@@ -49,4 +49,27 @@ public final class DateTimeUtils {
         Instant instant = Instant.ofEpochMilli(timestamp);
         return instant.atZone(ZoneId.of("UTC")).toLocalDate().format(DATE_FORMAT);
     }
+
+    /**
+     * Converts YYYY-MM-DD date string to the timestamp
+     * for the start of the specified calendar day (00:00:00)
+     * @param dateString date (e.g., "1970-01-01")
+     * @return the timestamp of the specified day's midnight
+     */
+    public static long getTimestampByDate(String dateString) {
+        LocalDate date = LocalDate.parse(dateString, DATE_FORMAT);
+        return date.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli();
+    }
+
+    /**
+     * Converts YYYY-MM-DD date string to the timestamp
+     * for the start of the next calendar day (00:00:00)
+     * @param dateString date (e.g., "1970-01-01")
+     * @return the timestamp of the next day's midnight
+     */
+    public static long getNextDayTimestampByDate(String dateString) {
+        LocalDate date = LocalDate.parse(dateString, DATE_FORMAT);
+        LocalDate nextDay = date.plusDays(1);
+        return nextDay.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli();
+    }
 }
