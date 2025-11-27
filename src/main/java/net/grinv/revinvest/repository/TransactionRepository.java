@@ -3,7 +3,6 @@ package net.grinv.revinvest.repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import net.grinv.revinvest.consts.Currency;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.Filter;
 import net.grinv.revinvest.model.Transaction;

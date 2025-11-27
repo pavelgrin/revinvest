@@ -51,8 +51,8 @@ public final class DateTimeUtils {
     }
 
     /**
-     * Converts YYYY-MM-DD date string to the timestamp
-     * for the start of the specified calendar day (00:00:00)
+     * Converts YYYY-MM-DD date string to the timestamp for the start of the specified calendar day (00:00:00)
+     *
      * @param dateString date (e.g., "1970-01-01")
      * @return the timestamp of the specified day's midnight
      */
@@ -62,8 +62,8 @@ public final class DateTimeUtils {
     }
 
     /**
-     * Converts YYYY-MM-DD date string to the timestamp
-     * for the start of the next calendar day (00:00:00)
+     * Converts YYYY-MM-DD date string to the timestamp for the start of the next calendar day (00:00:00)
+     *
      * @param dateString date (e.g., "1970-01-01")
      * @return the timestamp of the next day's midnight
      */

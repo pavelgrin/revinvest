@@ -1,6 +1,5 @@
 package net.grinv.revinvest.model;
 
-import net.grinv.revinvest.consts.Currency;
 import net.grinv.revinvest.consts.Type;
 
 public record Transaction(
