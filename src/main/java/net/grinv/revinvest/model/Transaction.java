@@ -12,5 +12,5 @@ public record Transaction(
         float quantity,
         float pricePerShare,
         float amount,
-        Currency currency,
+        String currency,
         float fxRate) {}

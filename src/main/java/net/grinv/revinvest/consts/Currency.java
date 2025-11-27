@@ -1,7 +1,7 @@
 package net.grinv.revinvest.consts;
 
 public enum Currency {
-    USD("USD"),
+    ORIGINAL("ORIGINAL"),
     EUR("EUR");
 
     private final String code;

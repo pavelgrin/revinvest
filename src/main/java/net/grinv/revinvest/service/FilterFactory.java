@@ -22,7 +22,7 @@ public class FilterFactory {
         String symbol = symbolParam == null || symbolParam.isBlank() ? null : symbolParam;
 
         Currency currency = currencyParam == null || currencyParam.isBlank()
-                ? Currency.USD
+                ? Currency.ORIGINAL
                 : Currency.getCurrencyByString(currencyParam);
 
         return new Filter(from, to, symbol, currency);

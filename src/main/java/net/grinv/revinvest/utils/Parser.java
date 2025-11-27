@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import net.grinv.revinvest.consts.Currency;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.Transaction;
 
@@ -39,7 +38,7 @@ public final class Parser {
      * {@code Date,Ticker,Type,Quantity,Price per share,Total Amount,Currency,FX Rate}
      *
      * <p>Date is in ISO format: {@code 1970-01-01T00:00:00.000[000]Z}<br>
-     * FX Rate is EUR/USD currency
+     * FX Rate is the exchange rate, for example USD to EUR
      */
     private static Transaction parseTransaction(String line) {
         String[] fields = line.split(",");
@@ -59,7 +58,7 @@ public final class Parser {
             float pricePerShare = parseFloat(fields[4]);
             float amount = parseFloat(fields[5]);
 
-            Currency currency = Currency.getCurrencyByString(fields[6].trim());
+            String currency = fields[6].trim();
 
             float fxRate = parseFloat(fields[7]);
 

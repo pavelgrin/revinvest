@@ -129,7 +129,7 @@ public final class TransactionRepository {
                 preparedStatement.setFloat(6, t.quantity());
                 preparedStatement.setFloat(7, t.pricePerShare());
                 preparedStatement.setFloat(8, t.amount());
-                preparedStatement.setString(9, t.currency().getCode());
+                preparedStatement.setString(9, t.currency());
                 preparedStatement.setFloat(10, t.fxRate());
 
                 preparedStatement.addBatch();
