@@ -21,7 +21,7 @@ public final class TransactionRepository {
         """;
     private static final String SQL_MIN_TIMESTAMP = "SELECT MIN(timestamp) as timestamp FROM Statement";
     private static final String SQL_MAX_TIMESTAMP = "SELECT MAX(timestamp) as timestamp FROM Statement";
-    private static final String SQL_SELECT_TRANSACTIONS = "SELECT * FROM Statement WHERE timestamp BETWEEN ? AND ?";
+    private static final String SQL_SELECT_TRANSACTIONS = "SELECT * FROM Statement WHERE timestamp <= ?";
 
     public TransactionRepository() {
         try {
@@ -37,19 +37,15 @@ public final class TransactionRepository {
     }
 
     public List<Transaction> getStatement(Filter filter) {
-        String sql = filter.hasTicker() ? SQL_SELECT_TRANSACTIONS + " AND symbol = ?" : SQL_SELECT_TRANSACTIONS;
-
-        long fromTimestamp = DateTimeUtils.getTimestampByDate(filter.from());
+        List<Transaction> transactions = new ArrayList<>();
         long toTimestamp = DateTimeUtils.getNextDayTimestampByDate(filter.to());
 
-        List<Transaction> transactions = new ArrayList<>();
-
+        String sql = filter.hasTicker() ? SQL_SELECT_TRANSACTIONS + " AND symbol = ?" : SQL_SELECT_TRANSACTIONS;
         try (Connection connection = this.connect();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setLong(1, fromTimestamp);
-            preparedStatement.setLong(2, toTimestamp);
+            preparedStatement.setLong(1, toTimestamp);
             if (filter.hasTicker()) {
-                preparedStatement.setString(3, filter.symbol());
+                preparedStatement.setString(2, filter.symbol());
             }
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
