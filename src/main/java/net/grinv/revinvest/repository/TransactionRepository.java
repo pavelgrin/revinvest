@@ -40,7 +40,10 @@ public final class TransactionRepository {
         List<Transaction> transactions = new ArrayList<>();
         long toTimestamp = DateTimeUtils.getNextDayTimestampByDate(filter.to());
 
-        String sql = filter.hasTicker() ? SQL_SELECT_TRANSACTIONS + " AND symbol = ?" : SQL_SELECT_TRANSACTIONS;
+        // TODO: Use StringBuilder
+        String sql = filter.hasTicker()
+                ? SQL_SELECT_TRANSACTIONS + " AND symbol = ? ORDER BY timestamp ASC"
+                : SQL_SELECT_TRANSACTIONS + " ORDER BY timestamp ASC";
         try (Connection connection = this.connect();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, toTimestamp);
@@ -69,7 +72,7 @@ public final class TransactionRepository {
         } catch (SQLException error) {
             throw new RuntimeException("Failed to get Statement", error);
         }
-        return transactions;
+        return List.copyOf(transactions);
     }
 
     /**

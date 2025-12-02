@@ -28,7 +28,7 @@ public final class Parser {
             throw new RuntimeException("Error while parsing CSV report", error);
         }
 
-        return transactions;
+        return List.copyOf(transactions);
     }
 
     /**
