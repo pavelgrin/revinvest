@@ -11,6 +11,8 @@ public class FilterFactory {
         this.transactionRepository = repo;
     }
 
+    // TODO: Add java doc
+    // TODO: Add unit test
     public Filter build(String fromParam, String toParam, String symbolParam, String currencyParam) {
         String from = fromParam == null || fromParam.isBlank()
                 ? this.transactionRepository.getFirstTransactionDate()

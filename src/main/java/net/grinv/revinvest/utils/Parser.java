@@ -8,6 +8,7 @@ import java.util.List;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.Transaction;
 
+// TODO: Add debug and info logs
 public final class Parser {
     public static List<Transaction> parseCSVReport(InputStream inputStream) {
         List<Transaction> transactions = new ArrayList<>();

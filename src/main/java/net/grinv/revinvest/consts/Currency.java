@@ -1,6 +1,7 @@
 package net.grinv.revinvest.consts;
 
 public enum Currency {
+    // TODO: Add description or java doc
     ORIGINAL("ORIGINAL"),
     EUR("EUR");
 

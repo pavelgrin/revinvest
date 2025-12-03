@@ -9,6 +9,7 @@ import net.grinv.revinvest.repository.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO: Add debug and info logs
 public final class ReportService {
     private static final Logger logger = LoggerFactory.getLogger(ReportService.class);
 
@@ -18,6 +19,7 @@ public final class ReportService {
         this.transactionRepository = repo;
     }
 
+    // TODO: Add java doc
     public Report generate(Filter filter) {
         Report report = new Report();
         report.setFilter(filter);
@@ -37,26 +39,24 @@ public final class ReportService {
         return report;
     }
 
+    // TODO: Add java doc
+    // TODO: Add unit test
     List<Transaction> normalizeData(List<Transaction> transactions, Filter filter) {
         Map<String, Float> quantityByTicker = new HashMap<>();
         Map<String, Float> splitRatioByTicker = new HashMap<>();
 
-        Iterator<Transaction> iterator = transactions.iterator();
-        while (iterator.hasNext()) {
-            Transaction transaction = iterator.next();
-
-            switch (transaction.type()) {
+        for (Transaction t : transactions) {
+            switch (t.type()) {
                 case Type.Buy:
-                    quantityByTicker.merge(transaction.ticker(), transaction.quantity(), Float::sum);
+                    quantityByTicker.merge(t.ticker(), t.quantity(), Float::sum);
                     break;
                 case Type.Sell:
-                    quantityByTicker.merge(transaction.ticker(), transaction.quantity() * -1, Float::sum);
+                    quantityByTicker.merge(t.ticker(), t.quantity() * -1, Float::sum);
                     break;
                 case Type.StockSplit:
-                    float quantitySum = quantityByTicker.get(transaction.ticker());
-                    float quantityRatio = (transaction.quantity() + quantitySum) / quantitySum;
-                    splitRatioByTicker.put(transaction.ticker(), quantityRatio);
-                    iterator.remove();
+                    float quantitySum = quantityByTicker.get(t.ticker());
+                    float quantityRatio = (t.quantity() + quantitySum) / quantitySum;
+                    splitRatioByTicker.put(t.ticker(), quantityRatio);
                     break;
             }
         }
@@ -76,18 +76,18 @@ public final class ReportService {
                         currency = Currency.EUR.getCode();
                     }
 
+                    // TODO: Check fields and remove unnecessary ones
                     return new Transaction(
-                            t.isoDate(), // Do we need it at all?
-                            t.date(), // Do we need it at all?
-                            t.timestamp(), // Do we need it at all?
+                            t.isoDate(),
+                            t.date(),
+                            t.timestamp(),
                             t.ticker(),
                             t.type(),
                             quantity,
                             pricePerShare,
                             amount,
-                            currency, // Do we need it at all?
-                            t.fxRate() // Do we need it at all?
-                            );
+                            currency,
+                            t.fxRate());
                 })
                 .toList();
     }

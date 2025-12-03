@@ -35,6 +35,8 @@ public final class IndexServlet extends HttpServlet {
             String symbolParam = request.getParameter(RequestParams.SYMBOL);
             String currencyParam = request.getParameter(RequestParams.CURRENCY);
 
+            // TODO: Currently, the report is calculated for every request. We need to write a service that will trigger
+            // when the raw transaction list is updated, generate the report, and cache the result
             Filter filter = this.filterFactory.build(fromParam, toParam, symbolParam, currencyParam);
             Report report = this.reportService.generate(filter);
 

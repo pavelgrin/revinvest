@@ -10,6 +10,7 @@ import net.grinv.revinvest.utils.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO: Add debug and info logs
 public final class TransactionRepository {
     private static final Logger logger = LoggerFactory.getLogger(TransactionRepository.class);
 
@@ -36,6 +37,7 @@ public final class TransactionRepository {
         return DriverManager.getConnection("jdbc:sqlite:" + dbUrl);
     }
 
+    // TODO: Add unit test
     public List<Transaction> getStatement(Filter filter) {
         List<Transaction> transactions = new ArrayList<>();
         long toTimestamp = DateTimeUtils.getNextDayTimestampByDate(filter.to());
@@ -80,6 +82,7 @@ public final class TransactionRepository {
      *
      * @return string in "YYYY-MM-DD" format
      */
+    // TODO: Add unit test
     public String getFirstTransactionDate() {
         try (Connection connection = connect();
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_MIN_TIMESTAMP);
@@ -100,6 +103,7 @@ public final class TransactionRepository {
      *
      * @return string in "YYYY-MM-DD" format
      */
+    // TODO: Add unit test
     public String getLastTransactionDate() {
         try (Connection connection = connect();
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_MAX_TIMESTAMP);
@@ -121,6 +125,7 @@ public final class TransactionRepository {
      *
      * @param transactions the list of validated Transaction objects
      */
+    // TODO: Add unit test
     public void updateStatement(List<Transaction> transactions) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

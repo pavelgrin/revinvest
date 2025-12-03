@@ -3,6 +3,7 @@ package net.grinv.revinvest.consts;
 import java.util.Arrays;
 
 public enum Type {
+    // TODO: Add description or java doc. Not all possible options are here
     TopUp("CASH TOP-UP"),
     Withdraw("CASH WITHDRAWAL"),
     Dividend("DIVIDEND"),
@@ -27,6 +28,7 @@ public enum Type {
      * @param typeStr string that must represent one of the enum items
      * @return corresponding Type enum
      */
+    // TODO: Add unit test
     public static Type getTypeByString(String typeStr) {
         if (typeStr == null || typeStr.isBlank()) {
             throw new IllegalArgumentException("Type cannot be blank");
