@@ -14,9 +14,9 @@
             <div class="summaryRow">
                 <div class="summaryLabel">Dividends</div>
                 <div class="summaryValue">
-                    gross: ${report.commonReport.dividends.withTax} /
-                    net: ${report.commonReport.dividends.amount} /
-                    tax: ${report.commonReport.dividends.tax}
+                    gross: ${report.commonReport.dividends.getWithTaxFixed} /
+                    net: ${report.commonReport.dividends.getAmountFixed} /
+                    tax: ${report.commonReport.dividends.getTaxFixed}
                 </div>
             </div>
             <div class="summaryRow">

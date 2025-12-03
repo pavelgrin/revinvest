@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 public final class ReportService {
     private static final Logger logger = LoggerFactory.getLogger(ReportService.class);
 
+    private static final float DIVIDEND_TAX_RATE = 0.15f;
+
     private final TransactionRepository transactionRepository;
 
     public ReportService(TransactionRepository repo) {
@@ -24,19 +26,43 @@ public final class ReportService {
         Report report = new Report();
         report.setFilter(filter);
 
+        logger.debug("Filter dateFrom: {}; dateTo: {}; symbol: {}", filter.from(), filter.to(), filter.symbol());
+
         List<Transaction> transactions = transactionRepository.getStatement(filter);
+        logger.debug("Size of full list of transactions: {}", transactions.size());
+
+        // TODO: Not all types are present in groups and may return null. Validate retrieving data
         Map<Type, List<Transaction>> transactionsByType =
                 this.normalizeData(transactions, filter).stream().collect(Collectors.groupingBy(Transaction::type));
 
-        logger.debug("Total transactions: {}", transactionsByType.size());
+        logger.debug(
+                "Buy transactions size: {}", transactionsByType.get(Type.Buy).size());
+        logger.debug(
+                "Dividend transactions size: {}",
+                transactionsByType.get(Type.Dividend).size());
+
+        Dividends dividends = this.getDividends(transactionsByType.get(Type.Dividend));
 
         if (filter.hasTicker()) {
             report.setTickerReport(new TickerReport());
         } else {
-            report.setCommonReport(new CommonReport());
+            CommonReport commonReport = new CommonReport();
+            commonReport.setDividends(dividends);
+
+            report.setCommonReport(commonReport);
         }
 
         return report;
+    }
+
+    // TODO: Add java doc
+    // TODO: Add unit test
+    Dividends getDividends(List<Transaction> dividends) {
+        float amountNet =
+                (float) dividends.stream().mapToDouble(Transaction::amount).sum();
+        float amountWithTax = amountNet / (1 - DIVIDEND_TAX_RATE);
+        logger.debug("getDividends: {}", amountNet);
+        return new Dividends(amountNet, amountWithTax, amountWithTax - amountNet);
     }
 
     // TODO: Add java doc

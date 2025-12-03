@@ -22,7 +22,8 @@ public final class TransactionRepository {
         """;
     private static final String SQL_MIN_TIMESTAMP = "SELECT MIN(timestamp) as timestamp FROM Statement";
     private static final String SQL_MAX_TIMESTAMP = "SELECT MAX(timestamp) as timestamp FROM Statement";
-    private static final String SQL_SELECT_TRANSACTIONS = "SELECT * FROM Statement WHERE timestamp <= ?";
+    private static final String SQL_SELECT_TRANSACTIONS =
+            "SELECT * FROM Statement WHERE (timestamp <= ? AND (type = 'BUY - MARKET' OR timestamp >= ?))";
 
     public TransactionRepository() {
         try {
@@ -40,6 +41,7 @@ public final class TransactionRepository {
     // TODO: Add unit test
     public List<Transaction> getStatement(Filter filter) {
         List<Transaction> transactions = new ArrayList<>();
+        long fromTimestamp = DateTimeUtils.getTimestampByDate(filter.from());
         long toTimestamp = DateTimeUtils.getNextDayTimestampByDate(filter.to());
 
         // TODO: Use StringBuilder
@@ -49,8 +51,9 @@ public final class TransactionRepository {
         try (Connection connection = this.connect();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, toTimestamp);
+            preparedStatement.setLong(2, fromTimestamp);
             if (filter.hasTicker()) {
-                preparedStatement.setString(2, filter.symbol());
+                preparedStatement.setString(3, filter.symbol());
             }
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
