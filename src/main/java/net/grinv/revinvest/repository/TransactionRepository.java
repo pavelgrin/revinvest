@@ -22,8 +22,7 @@ public final class TransactionRepository {
         """;
     private static final String SQL_MIN_TIMESTAMP = "SELECT MIN(timestamp) as timestamp FROM Statement";
     private static final String SQL_MAX_TIMESTAMP = "SELECT MAX(timestamp) as timestamp FROM Statement";
-    private static final String SQL_SELECT_TRANSACTIONS =
-            "SELECT * FROM Statement WHERE (timestamp <= ? AND (type = 'BUY - MARKET' OR timestamp >= ?))";
+    private static final String SQL_SELECT_TRANSACTIONS = "SELECT * FROM Statement";
 
     public TransactionRepository() {
         try {
@@ -44,12 +43,15 @@ public final class TransactionRepository {
         long fromTimestamp = DateTimeUtils.getTimestampByDate(filter.from());
         long toTimestamp = DateTimeUtils.getNextDayTimestampByDate(filter.to());
 
-        // TODO: Use StringBuilder
-        String sql = filter.hasTicker()
-                ? SQL_SELECT_TRANSACTIONS + " AND symbol = ? ORDER BY timestamp ASC"
-                : SQL_SELECT_TRANSACTIONS + " ORDER BY timestamp ASC";
+        StringBuilder sql = new StringBuilder(SQL_SELECT_TRANSACTIONS);
+        sql.append(" WHERE (timestamp <= ? AND (type = '").append(Type.Buy.getLabel()).append("' OR timestamp >= ?))");
+        if (filter.hasTicker()) {
+            sql.append(" AND symbol = ?");
+        }
+        sql.append(" ORDER BY timestamp ASC");
+
         try (Connection connection = this.connect();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql.toString())) {
             preparedStatement.setLong(1, toTimestamp);
             preparedStatement.setLong(2, fromTimestamp);
             if (filter.hasTicker()) {

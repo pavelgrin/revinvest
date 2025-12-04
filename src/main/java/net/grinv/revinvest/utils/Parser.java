@@ -71,6 +71,8 @@ public final class Parser {
         }
     }
 
+    // TODO: Add java doc
+    // TODO: Add unit test
     private static float parseFloat(String value) {
         String numericString = value.replaceAll("[^\\d.-]", "");
         if (numericString.isBlank()) {
