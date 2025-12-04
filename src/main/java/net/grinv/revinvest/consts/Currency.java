@@ -1,8 +1,9 @@
 package net.grinv.revinvest.consts;
 
 public enum Currency {
-    // TODO: Add description or java doc
+    /** Display the original currency of the transaction */
     ORIGINAL("ORIGINAL"),
+    /** All transactions will be converted into EUR */
     EUR("EUR");
 
     private final String code;

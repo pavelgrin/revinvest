@@ -2,8 +2,12 @@ package net.grinv.revinvest.consts;
 
 import java.util.Arrays;
 
+/**
+ * Defines the supported financial transaction types for processing within the revinvest application
+ *
+ * <p>Users must filter or delete all unhandled transaction types from the source CSV file before attempting to upload
+ */
 public enum Type {
-    // TODO: Add description or java doc. Not all possible options are here
     TopUp("CASH TOP-UP"),
     Withdraw("CASH WITHDRAWAL"),
     Dividend("DIVIDEND"),

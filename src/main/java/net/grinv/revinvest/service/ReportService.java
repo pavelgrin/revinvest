@@ -20,15 +20,7 @@ public final class ReportService {
         this.transactionRepository = repo;
     }
 
-    // TODO: Add java doc
     public Report generate(Filter filter) {
-        logger.debug(
-                "[generate] Filter parameters: from: {}, to: {}, symbol: {}, currency: {}",
-                filter.from(),
-                filter.to(),
-                filter.symbol(),
-                filter.currency());
-
         Report report = new Report();
         report.setFilter(filter);
 
@@ -55,7 +47,13 @@ public final class ReportService {
         return report;
     }
 
-    // TODO: Add java doc
+    /**
+     * Calculates the total dividend amounts, including the gross amount (before tax) and the tax amount, based on a
+     * list of processed dividend transactions
+     *
+     * <p>The method aggregates the net received amounts and then reverses the tax rate (assumed to be
+     * {@code DIVIDEND_TAX_RATE}) to determine the gross amount the dividend was declared at
+     */
     // TODO: Add unit test
     Dividends getDividends(List<Transaction> dividends) {
         float amountNet =
@@ -65,7 +63,14 @@ public final class ReportService {
         return new Dividends(amountNet, amountWithTax, amountWithTax - amountNet);
     }
 
-    // TODO: Add java doc
+    /**
+     * Executes the two main data normalization steps:
+     *
+     * <ol>
+     *   <li>Applies stock split to all affected transactions
+     *   <li>Conditionally converts amounts into the base currency (EUR)
+     * </ol>
+     */
     // TODO: Add unit test
     List<Transaction> normalizeData(List<Transaction> transactions, Filter filter) {
         Map<String, Float> quantityByTicker = new HashMap<>();

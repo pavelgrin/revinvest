@@ -76,7 +76,11 @@ public final class Parser {
         }
     }
 
-    // TODO: Add java doc
+    /**
+     * Safely parses a string into a float value after removing all non-numeric characters
+     *
+     * <p>This method is resistant to currency symbols (e.g. "USD 99.99") and extraneous spaces
+     */
     // TODO: Add unit test
     private static float parseFloat(String value) {
         String numericString = value.replaceAll("[^\\d.-]", "");
