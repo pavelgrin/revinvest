@@ -45,7 +45,7 @@ public final class UpdateServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
             }
         } catch (Exception error) {
-            logger.error("UpdateServlet error", error);
+            logger.error("[doPost] UpdateServlet error", error);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

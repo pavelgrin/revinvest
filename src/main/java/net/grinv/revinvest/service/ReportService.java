@@ -9,7 +9,6 @@ import net.grinv.revinvest.repository.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO: Add debug and info logs
 public final class ReportService {
     private static final Logger logger = LoggerFactory.getLogger(ReportService.class);
 
@@ -23,25 +22,26 @@ public final class ReportService {
 
     // TODO: Add java doc
     public Report generate(Filter filter) {
+        logger.debug(
+                "[generate] Filter parameters: from: {}, to: {}, symbol: {}, currency: {}",
+                filter.from(),
+                filter.to(),
+                filter.symbol(),
+                filter.currency());
+
         Report report = new Report();
         report.setFilter(filter);
 
-        logger.debug("Filter dateFrom: {}; dateTo: {}; symbol: {}", filter.from(), filter.to(), filter.symbol());
-
         List<Transaction> transactions = transactionRepository.getStatement(filter);
-        logger.debug("Size of full list of transactions: {}", transactions.size());
 
-        // TODO: Not all types are present in groups and may return null. Validate retrieving data
         Map<Type, List<Transaction>> transactionsByType =
                 this.normalizeData(transactions, filter).stream().collect(Collectors.groupingBy(Transaction::type));
 
-        logger.debug(
-                "Buy transactions size: {}", transactionsByType.get(Type.Buy).size());
-        logger.debug(
-                "Dividend transactions size: {}",
-                transactionsByType.get(Type.Dividend).size());
+        logger.info("[generate] Received transaction types: {}", transactionsByType.keySet());
 
-        Dividends dividends = this.getDividends(transactionsByType.get(Type.Dividend));
+        Dividends dividends = transactionsByType.containsKey(Type.Dividend)
+                ? this.getDividends(transactionsByType.get(Type.Dividend))
+                : new Dividends(0.0f, 0.0f, 0.0f);
 
         if (filter.hasTicker()) {
             report.setTickerReport(new TickerReport());
@@ -61,7 +61,7 @@ public final class ReportService {
         float amountNet =
                 (float) dividends.stream().mapToDouble(Transaction::amount).sum();
         float amountWithTax = amountNet / (1 - DIVIDEND_TAX_RATE);
-        logger.debug("getDividends: {}", amountNet);
+        logger.info("[getDividends] Dividend amount: {}", amountNet);
         return new Dividends(amountNet, amountWithTax, amountWithTax - amountNet);
     }
 
@@ -87,6 +87,7 @@ public final class ReportService {
             }
         }
 
+        logger.info("[normalizeData] Split coefficient: {}", splitRatioByTicker);
         return transactions.stream()
                 .map((t) -> {
                     float ratio = splitRatioByTicker.getOrDefault(t.ticker(), 1.0f);

@@ -2,6 +2,7 @@ package net.grinv.revinvest.repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.Filter;
@@ -10,7 +11,6 @@ import net.grinv.revinvest.utils.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO: Add debug and info logs
 public final class TransactionRepository {
     private static final Logger logger = LoggerFactory.getLogger(TransactionRepository.class);
 
@@ -44,12 +44,15 @@ public final class TransactionRepository {
         long toTimestamp = DateTimeUtils.getNextDayTimestampByDate(filter.to());
 
         StringBuilder sql = new StringBuilder(SQL_SELECT_TRANSACTIONS);
-        sql.append(" WHERE (timestamp <= ? AND (type = '").append(Type.Buy.getLabel()).append("' OR timestamp >= ?))");
+        sql.append(" WHERE (timestamp <= ? AND (type = '")
+                .append(Type.Buy.getLabel())
+                .append("' OR timestamp >= ?))");
         if (filter.hasTicker()) {
             sql.append(" AND symbol = ?");
         }
         sql.append(" ORDER BY timestamp ASC");
 
+        logger.info("[getStatement] SQL query: {}", sql);
         try (Connection connection = this.connect();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql.toString())) {
             preparedStatement.setLong(1, toTimestamp);
@@ -72,13 +75,18 @@ public final class TransactionRepository {
                     float fxRate = rs.getFloat("fxRate");
 
                     Type type = Type.getTypeByString(typeStr);
-                    transactions.add(new Transaction(
-                            isoDate, date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate));
+
+                    Transaction transaction = new Transaction(
+                            isoDate, date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
+                    logger.trace("[getStatement] {}", transaction);
+                    transactions.add(transaction);
                 }
             }
         } catch (SQLException error) {
             throw new RuntimeException("Failed to get Statement", error);
         }
+
+        logger.info("[getStatement] Received {} records", transactions.size());
         return List.copyOf(transactions);
     }
 
@@ -95,7 +103,10 @@ public final class TransactionRepository {
 
             if (rs.next()) {
                 long timestamp = rs.getLong("timestamp");
-                return timestamp > 0 ? DateTimeUtils.getDateByTimestamp(timestamp) : DateTimeUtils.getCurrentDate();
+                String date =
+                        timestamp > 0 ? DateTimeUtils.getDateByTimestamp(timestamp) : DateTimeUtils.getCurrentDate();
+                logger.info("[getFirstTransactionDate] Timestamp: {}; Date: {}", timestamp, date);
+                return date;
             }
             throw new RuntimeException("Failed to get first transaction date");
         } catch (SQLException error) {
@@ -116,7 +127,10 @@ public final class TransactionRepository {
 
             if (rs.next()) {
                 long timestamp = rs.getLong("timestamp");
-                return timestamp > 0 ? DateTimeUtils.getDateByTimestamp(timestamp) : DateTimeUtils.getCurrentDate();
+                String date =
+                        timestamp > 0 ? DateTimeUtils.getDateByTimestamp(timestamp) : DateTimeUtils.getCurrentDate();
+                logger.info("[getLastTransactionDate] Timestamp: {}; Date: {}", timestamp, date);
+                return date;
             }
             throw new RuntimeException("Failed to get last transaction date");
         } catch (SQLException error) {
@@ -140,6 +154,8 @@ public final class TransactionRepository {
             connection.setAutoCommit(false);
 
             for (Transaction t : transactions) {
+                logger.trace("[updateStatement] {}", t);
+
                 preparedStatement.setString(1, t.isoDate());
                 preparedStatement.setString(2, t.date());
                 preparedStatement.setLong(3, t.timestamp());
@@ -154,12 +170,19 @@ public final class TransactionRepository {
                 preparedStatement.addBatch();
             }
 
-            preparedStatement.executeBatch();
+            int[] results = preparedStatement.executeBatch();
             connection.commit();
+
+            if (logger.isInfoEnabled()) {
+                long rowsAffected = Arrays.stream(results)
+                        .filter(r -> r >= 0 || r == Statement.SUCCESS_NO_INFO)
+                        .count();
+                logger.info("[updateStatement] Inserted {} records", rowsAffected);
+            }
         } catch (SQLException error) {
             if (connection != null) {
                 try {
-                    logger.error("Transaction is being rolled back");
+                    logger.error("[updateStatement] Transaction is being rolled back");
                     connection.rollback();
                 } catch (SQLException rollbackError) {
                     throw new RuntimeException("Failed to rollback transaction", rollbackError);

@@ -44,7 +44,7 @@ public final class IndexServlet extends HttpServlet {
             request.setAttribute("report", report);
             request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
         } catch (Exception error) {
-            logger.error("IndexServlet error", error);
+            logger.error("[doGet] IndexServlet error", error);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

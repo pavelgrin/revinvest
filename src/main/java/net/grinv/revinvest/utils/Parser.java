@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-// TODO: Add debug and info logs
 public final class Parser {
+    private static final Logger logger = LoggerFactory.getLogger(Parser.class);
+
     public static List<Transaction> parseCSVReport(InputStream inputStream) {
         List<Transaction> transactions = new ArrayList<>();
 
@@ -29,6 +32,7 @@ public final class Parser {
             throw new RuntimeException("Error while parsing CSV report", error);
         }
 
+        logger.info("[parseCSVReport] Parsed {} lines from csv file", transactions.size());
         return List.copyOf(transactions);
     }
 
@@ -63,6 +67,7 @@ public final class Parser {
 
             float fxRate = parseFloat(fields[7]);
 
+            logger.trace("[parseTransaction] {}", line);
             return new Transaction(
                     isoDate, data, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
 
