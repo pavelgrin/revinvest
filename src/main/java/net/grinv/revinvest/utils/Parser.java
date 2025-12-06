@@ -81,7 +81,6 @@ public final class Parser {
      *
      * <p>This method is resistant to currency symbols (e.g. "USD 99.99") and extraneous spaces
      */
-    // TODO: Add unit test
     private static float parseFloat(String value) {
         String numericString = value.replaceAll("[^\\d.-]", "");
         if (numericString.isBlank()) {

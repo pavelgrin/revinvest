@@ -54,8 +54,7 @@ public final class ReportService {
      * <p>The method aggregates the net received amounts and then reverses the tax rate (assumed to be
      * {@code DIVIDEND_TAX_RATE}) to determine the gross amount the dividend was declared at
      */
-    // TODO: Add unit test
-    Dividends getDividends(List<Transaction> dividends) {
+    private Dividends getDividends(List<Transaction> dividends) {
         float amountNet =
                 (float) dividends.stream().mapToDouble(Transaction::amount).sum();
         float amountWithTax = amountNet / (1 - DIVIDEND_TAX_RATE);
@@ -71,8 +70,7 @@ public final class ReportService {
      *   <li>Conditionally converts amounts into the base currency (EUR)
      * </ol>
      */
-    // TODO: Add unit test
-    List<Transaction> normalizeData(List<Transaction> transactions, Filter filter) {
+    private List<Transaction> normalizeData(List<Transaction> transactions, Filter filter) {
         Map<String, Float> quantityByTicker = new HashMap<>();
         Map<String, Float> splitRatioByTicker = new HashMap<>();
 

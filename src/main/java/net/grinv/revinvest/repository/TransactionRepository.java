@@ -37,7 +37,6 @@ public final class TransactionRepository {
         return DriverManager.getConnection("jdbc:sqlite:" + dbUrl);
     }
 
-    // TODO: Add unit test
     public List<Transaction> getStatement(Filter filter) {
         List<Transaction> transactions = new ArrayList<>();
         long fromTimestamp = DateTimeUtils.getTimestampByDate(filter.from());
@@ -95,7 +94,6 @@ public final class TransactionRepository {
      *
      * @return string in "YYYY-MM-DD" format
      */
-    // TODO: Add unit test
     public String getFirstTransactionDate() {
         try (Connection connection = connect();
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_MIN_TIMESTAMP);
@@ -119,7 +117,6 @@ public final class TransactionRepository {
      *
      * @return string in "YYYY-MM-DD" format
      */
-    // TODO: Add unit test
     public String getLastTransactionDate() {
         try (Connection connection = connect();
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_MAX_TIMESTAMP);
@@ -144,7 +141,6 @@ public final class TransactionRepository {
      *
      * @param transactions the list of validated Transaction objects
      */
-    // TODO: Add unit test
     public void updateStatement(List<Transaction> transactions) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

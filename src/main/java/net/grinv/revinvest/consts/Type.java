@@ -32,7 +32,6 @@ public enum Type {
      * @param typeStr string that must represent one of the enum items
      * @return corresponding Type enum
      */
-    // TODO: Add unit test
     public static Type getTypeByString(String typeStr) {
         if (typeStr == null || typeStr.isBlank()) {
             throw new IllegalArgumentException("Type cannot be blank");

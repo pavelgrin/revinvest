@@ -20,7 +20,6 @@ public class FilterFactory {
      * the date range by querying the database for the earliest and latest transaction timestamps if the parameters are
      * missing
      */
-    // TODO: Add unit test
     public Filter build(String fromParam, String toParam, String symbolParam, String currencyParam) {
         logger.debug(
                 "[build] Params: from={}, to={}, symbol={}, currency={}",
