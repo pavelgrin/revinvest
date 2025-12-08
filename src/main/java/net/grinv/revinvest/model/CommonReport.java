@@ -1,15 +1,15 @@
 package net.grinv.revinvest.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public final class CommonReport {
     private float balance;
     private Dividends dividends;
     private float custodyFee;
-    private int totalFIFO;
-    private int totalLIFO;
-    private ArrayList<SummaryItem> summaryFIFO;
-    private ArrayList<SummaryItem> summaryLIFO;
+    private float totalFIFO;
+    private float totalLIFO;
+    private List<SellSummary> summaryFIFO;
+    private List<SellSummary> summaryLIFO;
 
     public String getBalanceFixed() {
         return String.format("%.2f", this.balance);
@@ -35,35 +35,35 @@ public final class CommonReport {
         this.custodyFee = value;
     }
 
-    public int getTotalFIFO() {
-        return this.totalFIFO;
+    public String getTotalFIFOFixed() {
+        return String.format("%.2f", this.totalFIFO);
     }
 
-    public void setTotalFIFO(int value) {
+    public void setTotalFIFO(float value) {
         this.totalFIFO = value;
     }
 
-    public int getTotalLIFO() {
-        return this.totalLIFO;
+    public String getTotalLIFOFixed() {
+        return String.format("%.2f", this.totalLIFO);
     }
 
-    public void setTotalLIFO(int value) {
+    public void setTotalLIFO(float value) {
         this.totalLIFO = value;
     }
 
-    public ArrayList<SummaryItem> getSummaryFIFO() {
+    public List<SellSummary> getSummaryFIFO() {
         return this.summaryFIFO;
     }
 
-    public void setSummaryFIFO(ArrayList<SummaryItem> value) {
+    public void setSummaryFIFO(List<SellSummary> value) {
         this.summaryFIFO = value;
     }
 
-    public ArrayList<SummaryItem> getSummaryLIFO() {
+    public List<SellSummary> getSummaryLIFO() {
         return this.summaryLIFO;
     }
 
-    public void setSummaryLIFO(ArrayList<SummaryItem> value) {
+    public void setSummaryLIFO(List<SellSummary> value) {
         this.summaryLIFO = value;
     }
 }

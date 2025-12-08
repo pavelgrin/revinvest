@@ -26,8 +26,8 @@
             <div class="summaryRow">
                 <div class="summaryLabel">Total (by sells)</div>
                 <div class="summaryValue">
-                    FIFO: ${report.commonReport.totalFIFO} /
-                    LIFO: ${report.commonReport.totalLIFO}
+                    FIFO: ${report.commonReport.totalFIFOFixed} /
+                    LIFO: ${report.commonReport.totalLIFOFixed}
                 </div>
             </div>
         </div>
@@ -55,12 +55,12 @@
         <td>
             <a symbol="${item.symbol}">${item.symbol}</a>
         </td>
-        <td>${item.quantityFixed}</td>
-        <td>${item.costBasis}</td>
-        <td>${report.commonReport.summaryLIFO[status.index].costBasis}</td>
-        <td>${item.grossProceeds}</td>
-        <td>${item.pnl}</td>
-        <td>${report.commonReport.summaryLIFO[status.index].pnl}</td>
+        <td>${item.getQuantityFixed}</td>
+        <td>${item.getCostBasisFixed}</td>
+        <td>${report.commonReport.summaryLIFO[status.index].getCostBasisFixed}</td>
+        <td>${item.getGrossProceedsFixed}</td>
+        <td>${item.getPnlFixed}</td>
+        <td>${report.commonReport.summaryLIFO[status.index].getPnlFixed}</td>
     </tr>
     </c:forEach>
 </table>

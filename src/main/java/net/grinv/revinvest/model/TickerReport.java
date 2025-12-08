@@ -6,7 +6,7 @@ public final class TickerReport {
     private float dividends;
     private TickerSummary summary;
     private int pnlTotal;
-    private ArrayList<SummaryItem> sellsSummary;
+    private ArrayList<SellSummary> sellsSummary;
 
     public float getDividends() {
         return this.dividends;
@@ -32,11 +32,11 @@ public final class TickerReport {
         this.pnlTotal = value;
     }
 
-    public ArrayList<SummaryItem> getSellsSummary() {
+    public ArrayList<SellSummary> getSellsSummary() {
         return this.sellsSummary;
     }
 
-    public void setSellsSummary(ArrayList<SummaryItem> value) {
+    public void setSellsSummary(ArrayList<SellSummary> value) {
         this.sellsSummary = value;
     }
 }

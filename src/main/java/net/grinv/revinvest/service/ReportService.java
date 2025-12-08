@@ -32,6 +32,18 @@ public final class ReportService {
         logger.info("[generate] Received transaction types: {}", transactionsByType.keySet());
 
         Dividends dividends = this.getDividends(transactionsByType.getOrDefault(Type.Dividend, new ArrayList<>()));
+        logger.debug("[generate] {}", dividends);
+
+        List<Transaction> buyTransactions = transactionsByType.getOrDefault(Type.Buy, new ArrayList<>());
+        List<Transaction> sellTransactions = transactionsByType.getOrDefault(Type.Sell, new ArrayList<>());
+
+        SellSummaryWorker sellWorkerFIFO = new SellSummaryWorker(new LinkedList<>(buyTransactions));
+        SellSummaryWorker sellWorkerLIFO = new SellSummaryWorker(new LinkedList<>(buyTransactions.reversed()));
+
+        List<SellSummary> summaryFIFO =
+                sellTransactions.stream().map(sellWorkerFIFO::getNext).toList();
+        List<SellSummary> summaryLIFO =
+                sellTransactions.stream().map(sellWorkerLIFO::getNext).toList();
 
         if (filter.hasTicker()) {
             TickerReport tickerReport = new TickerReport();
@@ -44,15 +56,28 @@ public final class ReportService {
                     this.getTotalAmount(transactionsByType.getOrDefault(Type.Withdraw, new ArrayList<>()));
             float custodyFee = this.getTotalAmount(transactionsByType.getOrDefault(Type.CustodyFee, new ArrayList<>()));
 
+            float totalFIFO =
+                    (float) summaryFIFO.stream().mapToDouble(SellSummary::pnl).sum();
+            float totalLIFO =
+                    (float) summaryLIFO.stream().mapToDouble(SellSummary::pnl).sum();
+
             logger.debug("[generate][CommonReport] depositAmount: {}", depositAmount);
             logger.debug("[generate][CommonReport] withdrawalAmount: {}", withdrawalAmount);
-            logger.debug("[generate][CommonReport] dividends: {}", dividends);
             logger.debug("[generate][CommonReport] custodyFee: {}", custodyFee);
+            logger.debug("[generate][CommonReport] totalFIFO: {}", totalFIFO);
+            logger.debug("[generate][CommonReport] totalLIFO: {}", totalLIFO);
 
             CommonReport commonReport = new CommonReport();
+
             commonReport.setBalance(depositAmount + withdrawalAmount);
             commonReport.setDividends(dividends);
             commonReport.setCustodyFee(custodyFee);
+            commonReport.setCustodyFee(custodyFee);
+            commonReport.setTotalFIFO(totalFIFO);
+            commonReport.setTotalLIFO(totalLIFO);
+            commonReport.setSummaryFIFO(summaryFIFO);
+            commonReport.setSummaryLIFO(summaryLIFO);
+
             report.setCommonReport(commonReport);
         }
 
@@ -69,7 +94,6 @@ public final class ReportService {
     private Dividends getDividends(List<Transaction> dividends) {
         float amountNet = this.getTotalAmount(dividends);
         float amountWithTax = amountNet / (1 - DIVIDEND_TAX_RATE);
-        logger.info("[getDividends] Dividend amount: {}", amountNet);
         return new Dividends(amountNet, amountWithTax, amountWithTax - amountNet);
     }
 
