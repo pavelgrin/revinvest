@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public final class CommonReport {
     private int balance;
     private Dividends dividends;
-    private int custodyFee;
+    private float custodyFee;
     private int totalFIFO;
     private int totalLIFO;
     private ArrayList<SummaryItem> summaryFIFO;
@@ -27,11 +27,11 @@ public final class CommonReport {
         this.dividends = value;
     }
 
-    public int getCustodyFee() {
-        return this.custodyFee;
+    public String getCustodyFeeFixed() {
+        return String.format("%.2f", this.custodyFee);
     }
 
-    public void setCustodyFee(int value) {
+    public void setCustodyFee(float value) {
         this.custodyFee = value;
     }
 

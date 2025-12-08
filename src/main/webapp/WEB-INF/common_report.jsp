@@ -21,7 +21,7 @@
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Custody Fee</div>
-                <div class="summaryValue">${report.commonReport.custodyFee}</div>
+                <div class="summaryValue">${report.commonReport.custodyFeeFixed}</div>
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Total (by sells)</div>

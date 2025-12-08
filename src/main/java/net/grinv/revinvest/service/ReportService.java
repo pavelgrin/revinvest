@@ -31,16 +31,24 @@ public final class ReportService {
 
         logger.info("[generate] Received transaction types: {}", transactionsByType.keySet());
 
-        Dividends dividends = transactionsByType.containsKey(Type.Dividend)
-                ? this.getDividends(transactionsByType.get(Type.Dividend))
-                : new Dividends(0.0f, 0.0f, 0.0f);
+        Dividends dividends = this.getDividends(transactionsByType.getOrDefault(Type.Dividend, new ArrayList<>()));
 
         if (filter.hasTicker()) {
-            report.setTickerReport(new TickerReport());
+            TickerReport tickerReport = new TickerReport();
+            tickerReport.setDividends(dividends.amount());
+
+            report.setTickerReport(tickerReport);
         } else {
+            float custodyFee = (float) transactionsByType.getOrDefault(Type.CustodyFee, new ArrayList<>()).stream()
+                    .mapToDouble(Transaction::amount)
+                    .sum();
+
+            logger.debug("[generate][CommonReport] dividends: {}", dividends);
+            logger.debug("[generate][CommonReport] custodyFee: {}", custodyFee);
+
             CommonReport commonReport = new CommonReport();
             commonReport.setDividends(dividends);
-
+            commonReport.setCustodyFee(custodyFee);
             report.setCommonReport(commonReport);
         }
 

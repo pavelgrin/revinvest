@@ -3,16 +3,16 @@ package net.grinv.revinvest.model;
 import java.util.ArrayList;
 
 public final class TickerReport {
-    private int dividends;
+    private float dividends;
     private TickerSummary summary;
     private int pnlTotal;
     private ArrayList<SummaryItem> sellsSummary;
 
-    public int getDividends() {
+    public float getDividends() {
         return this.dividends;
     }
 
-    public void setDividends(int value) {
+    public void setDividends(float value) {
         this.dividends = value;
     }
 
