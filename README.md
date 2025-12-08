@@ -6,7 +6,7 @@ This project provides a tool to calculate the results of buy/sell share transact
 
 ### Prerequisites
 
-- **JDK**
+- **JDK21+**
 - **Apache Maven**
 - **Docker**
 - **Python 3** (Required for the database migration tool)
