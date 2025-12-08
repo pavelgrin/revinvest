@@ -1,15 +1,15 @@
 package net.grinv.revinvest.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public final class TickerReport {
     private float dividends;
     private TickerSummary summary;
-    private int pnlTotal;
-    private ArrayList<SellSummary> sellsSummary;
+    private float pnlTotal;
+    private List<SellSummary> sellsSummary;
 
-    public float getDividends() {
-        return this.dividends;
+    public String getDividendsFixed() {
+        return String.format("%.2f", this.dividends);
     }
 
     public void setDividends(float value) {
@@ -24,19 +24,19 @@ public final class TickerReport {
         this.summary = value;
     }
 
-    public int getPnlTotal() {
-        return this.pnlTotal;
+    public String getPnlTotalFixed() {
+        return String.format("%.2f", this.pnlTotal);
     }
 
-    public void setPnlTotal(int value) {
+    public void setPnlTotal(float value) {
         this.pnlTotal = value;
     }
 
-    public ArrayList<SellSummary> getSellsSummary() {
+    public List<SellSummary> getSellsSummary() {
         return this.sellsSummary;
     }
 
-    public void setSellsSummary(ArrayList<SellSummary> value) {
+    public void setSellsSummary(List<SellSummary> value) {
         this.sellsSummary = value;
     }
 }

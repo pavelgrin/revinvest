@@ -45,9 +45,26 @@ public final class ReportService {
         List<SellSummary> summaryLIFO =
                 sellTransactions.stream().map(sellWorkerLIFO::getNext).toList();
 
+        float totalFIFO =
+                (float) summaryFIFO.stream().mapToDouble(SellSummary::pnl).sum();
+        float totalLIFO =
+                (float) summaryLIFO.stream().mapToDouble(SellSummary::pnl).sum();
+        logger.debug("[generate] totalFIFO: {}", totalFIFO);
+        logger.debug("[generate] totalLIFO: {}", totalLIFO);
+
         if (filter.hasTicker()) {
+            float buyAmount = this.getTotalAmount(buyTransactions);
+            float sellAmount = this.getTotalAmount(sellTransactions);
+
+            TickerSummary summary = new TickerSummary(buyAmount, sellAmount, buyAmount - sellAmount, 0.0f, 0.0f);
+            logger.debug("[generate][TickerReport] summary: {}", summary);
+
             TickerReport tickerReport = new TickerReport();
+
             tickerReport.setDividends(dividends.amount());
+            tickerReport.setSummary(summary);
+            tickerReport.setPnlTotal(totalLIFO);
+            tickerReport.setSellsSummary(summaryLIFO);
 
             report.setTickerReport(tickerReport);
         } else {
@@ -56,16 +73,9 @@ public final class ReportService {
                     this.getTotalAmount(transactionsByType.getOrDefault(Type.Withdraw, new ArrayList<>()));
             float custodyFee = this.getTotalAmount(transactionsByType.getOrDefault(Type.CustodyFee, new ArrayList<>()));
 
-            float totalFIFO =
-                    (float) summaryFIFO.stream().mapToDouble(SellSummary::pnl).sum();
-            float totalLIFO =
-                    (float) summaryLIFO.stream().mapToDouble(SellSummary::pnl).sum();
-
             logger.debug("[generate][CommonReport] depositAmount: {}", depositAmount);
             logger.debug("[generate][CommonReport] withdrawalAmount: {}", withdrawalAmount);
             logger.debug("[generate][CommonReport] custodyFee: {}", custodyFee);
-            logger.debug("[generate][CommonReport] totalFIFO: {}", totalFIFO);
-            logger.debug("[generate][CommonReport] totalLIFO: {}", totalLIFO);
 
             CommonReport commonReport = new CommonReport();
 
@@ -99,6 +109,10 @@ public final class ReportService {
 
     private float getTotalAmount(List<Transaction> transactions) {
         return (float) transactions.stream().mapToDouble(Transaction::amount).sum();
+    }
+
+    private float getTotalQuantity(List<Transaction> transactions) {
+        return (float) transactions.stream().mapToDouble(Transaction::quantity).sum();
     }
 
     /**

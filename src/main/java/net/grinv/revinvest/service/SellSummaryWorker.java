@@ -13,6 +13,6 @@ public class SellSummaryWorker {
 
     /** Calculates the realized capital gain for a single sale and consumes the necessary lots from buyTransactions */
     public SellSummary getNext(Transaction sellTransaction) {
-        return new SellSummary("", "", 0.0f, 0.0f, 0.0f, 0.0f);
+        return new SellSummary(sellTransaction.date(), sellTransaction.ticker(), 0.0f, 0.0f, 0.0f, 0.0f);
     }
 }

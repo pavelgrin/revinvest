@@ -47,7 +47,7 @@ public final class TransactionRepository {
                 .append(Type.Buy.getLabel())
                 .append("' OR timestamp >= ?))");
         if (filter.hasTicker()) {
-            sql.append(" AND symbol = ?");
+            sql.append(" AND ticker = ?");
         }
         sql.append(" ORDER BY timestamp ASC");
 
