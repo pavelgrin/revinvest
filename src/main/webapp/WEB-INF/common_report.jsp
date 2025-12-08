@@ -9,7 +9,7 @@
             <jsp:include page="filter_form.jsp" />
             <div class="summaryRow">
                 <div class="summaryLabel">Balance</div>
-                <div class="summaryValue">${report.commonReport.balance}</div>
+                <div class="summaryValue">${report.commonReport.balanceFixed}</div>
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Dividends</div>

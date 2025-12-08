@@ -3,7 +3,7 @@ package net.grinv.revinvest.model;
 import java.util.ArrayList;
 
 public final class CommonReport {
-    private int balance;
+    private float balance;
     private Dividends dividends;
     private float custodyFee;
     private int totalFIFO;
@@ -11,11 +11,11 @@ public final class CommonReport {
     private ArrayList<SummaryItem> summaryFIFO;
     private ArrayList<SummaryItem> summaryLIFO;
 
-    public int getBalance() {
-        return this.balance;
+    public String getBalanceFixed() {
+        return String.format("%.2f", this.balance);
     }
 
-    public void setBalance(int value) {
+    public void setBalance(float value) {
         this.balance = value;
     }
 

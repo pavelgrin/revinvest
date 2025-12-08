@@ -39,14 +39,18 @@ public final class ReportService {
 
             report.setTickerReport(tickerReport);
         } else {
-            float custodyFee = (float) transactionsByType.getOrDefault(Type.CustodyFee, new ArrayList<>()).stream()
-                    .mapToDouble(Transaction::amount)
-                    .sum();
+            float depositAmount = this.getTotalAmount(transactionsByType.getOrDefault(Type.TopUp, new ArrayList<>()));
+            float withdrawalAmount =
+                    this.getTotalAmount(transactionsByType.getOrDefault(Type.Withdraw, new ArrayList<>()));
+            float custodyFee = this.getTotalAmount(transactionsByType.getOrDefault(Type.CustodyFee, new ArrayList<>()));
 
+            logger.debug("[generate][CommonReport] depositAmount: {}", depositAmount);
+            logger.debug("[generate][CommonReport] withdrawalAmount: {}", withdrawalAmount);
             logger.debug("[generate][CommonReport] dividends: {}", dividends);
             logger.debug("[generate][CommonReport] custodyFee: {}", custodyFee);
 
             CommonReport commonReport = new CommonReport();
+            commonReport.setBalance(depositAmount + withdrawalAmount);
             commonReport.setDividends(dividends);
             commonReport.setCustodyFee(custodyFee);
             report.setCommonReport(commonReport);
@@ -63,11 +67,14 @@ public final class ReportService {
      * {@code DIVIDEND_TAX_RATE}) to determine the gross amount the dividend was declared at
      */
     private Dividends getDividends(List<Transaction> dividends) {
-        float amountNet =
-                (float) dividends.stream().mapToDouble(Transaction::amount).sum();
+        float amountNet = this.getTotalAmount(dividends);
         float amountWithTax = amountNet / (1 - DIVIDEND_TAX_RATE);
         logger.info("[getDividends] Dividend amount: {}", amountNet);
         return new Dividends(amountNet, amountWithTax, amountWithTax - amountNet);
+    }
+
+    private float getTotalAmount(List<Transaction> transactions) {
+        return (float) transactions.stream().mapToDouble(Transaction::amount).sum();
     }
 
     /**
