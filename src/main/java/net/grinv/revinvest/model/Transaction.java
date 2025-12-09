@@ -3,7 +3,6 @@ package net.grinv.revinvest.model;
 import net.grinv.revinvest.consts.Type;
 
 public record Transaction(
-        String isoDate,
         String date,
         long timestamp,
         String ticker,

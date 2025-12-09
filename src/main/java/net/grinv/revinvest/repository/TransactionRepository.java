@@ -17,8 +17,8 @@ public final class TransactionRepository {
     private static final String SQL_INSERT_TRANSACTION =
             """
         INSERT OR REPLACE INTO Statement
-        (isoDate, date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
     private static final String SQL_MIN_TIMESTAMP = "SELECT MIN(timestamp) as timestamp FROM Statement";
     private static final String SQL_MAX_TIMESTAMP = "SELECT MAX(timestamp) as timestamp FROM Statement";
@@ -62,7 +62,6 @@ public final class TransactionRepository {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    String isoDate = rs.getString("isoDate");
                     String date = rs.getString("date");
                     long timestamp = rs.getLong("timestamp");
                     String ticker = rs.getString("ticker");
@@ -76,7 +75,7 @@ public final class TransactionRepository {
                     Type type = Type.getTypeByString(typeStr);
 
                     Transaction transaction = new Transaction(
-                            isoDate, date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
+                            date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
                     logger.trace("[getStatement] {}", transaction);
                     transactions.add(transaction);
                 }
@@ -152,16 +151,15 @@ public final class TransactionRepository {
             for (Transaction t : transactions) {
                 logger.trace("[updateStatement] {}", t);
 
-                preparedStatement.setString(1, t.isoDate());
-                preparedStatement.setString(2, t.date());
-                preparedStatement.setLong(3, t.timestamp());
-                preparedStatement.setString(4, t.ticker());
-                preparedStatement.setString(5, t.type().getLabel());
-                preparedStatement.setFloat(6, t.quantity());
-                preparedStatement.setFloat(7, t.pricePerShare());
-                preparedStatement.setFloat(8, t.amount());
-                preparedStatement.setString(9, t.currency());
-                preparedStatement.setFloat(10, t.fxRate());
+                preparedStatement.setString(1, t.date());
+                preparedStatement.setLong(2, t.timestamp());
+                preparedStatement.setString(3, t.ticker());
+                preparedStatement.setString(4, t.type().getLabel());
+                preparedStatement.setFloat(5, t.quantity());
+                preparedStatement.setFloat(6, t.pricePerShare());
+                preparedStatement.setFloat(7, t.amount());
+                preparedStatement.setString(8, t.currency());
+                preparedStatement.setFloat(9, t.fxRate());
 
                 preparedStatement.addBatch();
             }

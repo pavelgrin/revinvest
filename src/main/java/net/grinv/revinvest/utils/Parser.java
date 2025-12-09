@@ -53,7 +53,7 @@ public final class Parser {
         }
         try {
             String isoDate = fields[0].trim();
-            String data = DateTimeUtils.getDateTime(isoDate);
+            String date = DateTimeUtils.getDateTime(isoDate);
             long timestamp = DateTimeUtils.getTimestamp(isoDate);
 
             String ticker = fields[1].isBlank() ? null : fields[1].trim();
@@ -69,7 +69,7 @@ public final class Parser {
 
             logger.trace("[parseTransaction] {}", line);
             return new Transaction(
-                    isoDate, data, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
+                    date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
 
         } catch (Exception error) {
             throw new RuntimeException("Skipped line due to invalid data", error);

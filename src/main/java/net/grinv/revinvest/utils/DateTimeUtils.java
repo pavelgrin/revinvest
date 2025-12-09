@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 public final class DateTimeUtils {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter INPUT_FORMAT =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'H:mm:ss[.[SSSSSS][SSS]]'Z'");
@@ -16,16 +15,6 @@ public final class DateTimeUtils {
 
     public static String getCurrentDate() {
         return LocalDateTime.now().format(DATE_FORMAT);
-    }
-
-    public static String getDate(String isoDateTime) {
-        LocalDateTime dateTime = LocalDateTime.parse(isoDateTime, INPUT_FORMAT);
-        return dateTime.toLocalDate().format(DATE_FORMAT);
-    }
-
-    public static String getTime(String isoDateTime) {
-        LocalDateTime dateTime = LocalDateTime.parse(isoDateTime, INPUT_FORMAT);
-        return dateTime.toLocalTime().format(TIME_FORMAT);
     }
 
     public static String getDateTime(String isoDateTime) {

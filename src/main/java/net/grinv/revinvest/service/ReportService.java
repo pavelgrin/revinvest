@@ -159,9 +159,7 @@ public final class ReportService {
                         currency = Currency.EUR.getCode();
                     }
 
-                    // TODO: Check fields and remove unnecessary ones
                     return new Transaction(
-                            t.isoDate(),
                             t.date(),
                             t.timestamp(),
                             t.ticker(),
