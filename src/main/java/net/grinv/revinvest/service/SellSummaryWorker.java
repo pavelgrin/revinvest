@@ -1,13 +1,13 @@
 package net.grinv.revinvest.service;
 
-import java.util.Deque;
+import java.util.Queue;
 import net.grinv.revinvest.model.SellSummary;
 import net.grinv.revinvest.model.Transaction;
 
 public class SellSummaryWorker {
-    private final Deque<Transaction> buyTransactions;
+    private final Queue<Transaction> buyTransactions;
 
-    public SellSummaryWorker(Deque<Transaction> buyTransactions) {
+    public SellSummaryWorker(Queue<Transaction> buyTransactions) {
         this.buyTransactions = buyTransactions;
     }
 

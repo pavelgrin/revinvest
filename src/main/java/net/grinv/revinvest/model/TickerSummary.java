@@ -18,6 +18,6 @@ public record TickerSummary(float buyAmount, float sellAmount, float netAmount, 
     }
 
     public String getBepFixed() {
-        return String.format("%.8f", this.bep);
+        return String.format("%.2f", this.bep);
     }
 }

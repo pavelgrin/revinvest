@@ -20,9 +20,6 @@ public class FilterFactoryTest {
     @InjectMocks
     private FilterFactory factory;
 
-    private static final String DEFAULT_FROM = "2022-01-01";
-    private static final String DEFAULT_TO = "2025-12-31";
-
     @Test
     @DisplayName("All Params Provided: Should return exact input values")
     void build_shouldReturnExactInput_whenAllParamsAreProvided() {
@@ -46,13 +43,15 @@ public class FilterFactoryTest {
     @DisplayName("Missing Dates: Should use MIN/MAX dates from Repository")
     void build_shouldUseRepositoryDates_whenDateParamsAreNull() {
         // Configure the mock to return predictable default dates for all tests
-        Mockito.when(mockRepository.getFirstTransactionDate()).thenReturn(DEFAULT_FROM);
-        Mockito.when(mockRepository.getLastTransactionDate()).thenReturn(DEFAULT_TO);
+        String defaultFrom = "2022-01-01";
+        String defaultTo = "2025-12-31";
+        Mockito.when(mockRepository.getFirstTransactionDate()).thenReturn(defaultFrom);
+        Mockito.when(mockRepository.getLastTransactionDate()).thenReturn(defaultTo);
 
-        Filter filter = factory.build(null, "", "GOOG", "EUR");
+        Filter filter = factory.build(null, null, "", "");
 
-        Assertions.assertEquals(DEFAULT_FROM, filter.from(), "The \"from\" date must default to repository MIN date");
-        Assertions.assertEquals(DEFAULT_TO, filter.to(), "The \"to\" date must default to repository MAX date");
+        Assertions.assertEquals(defaultFrom, filter.from(), "The \"from\" date must default to repository MIN date");
+        Assertions.assertEquals(defaultTo, filter.to(), "The \"to\" date must default to repository MAX date");
 
         // Verify that the repository was called to fetch the defaults
         Mockito.verify(mockRepository, Mockito.times(1)).getFirstTransactionDate();
@@ -62,8 +61,8 @@ public class FilterFactoryTest {
     @Test
     @DisplayName("Missing Ticker: Should set symbol to null")
     void build_shouldSetSymbolToNull_whenSymbolIsBlankOrNull() {
-        Filter filter1 = factory.build(DEFAULT_FROM, DEFAULT_TO, null, "EUR");
-        Filter filter2 = factory.build(DEFAULT_FROM, DEFAULT_TO, "  \t  ", "EUR");
+        Filter filter1 = factory.build("", "", null, "");
+        Filter filter2 = factory.build("", "", "  \t  ", "");
 
         Assertions.assertNull(filter1.symbol(), "Symbol must be null when input is null");
         Assertions.assertNull(filter2.symbol(), "Symbol must be null when input is whitespace/blank");
@@ -73,7 +72,7 @@ public class FilterFactoryTest {
     @Test
     @DisplayName("Missing Currency: Should default to Currency.ORIGINAL")
     void build_shouldDefaultCurrency_whenCurrencyParamIsBlank() {
-        Filter filter = factory.build("", "", "AAPL", "");
+        Filter filter = factory.build("", "", "", "");
         Assertions.assertEquals(Currency.ORIGINAL, filter.currency(), "Currency must default to ORIGINAL");
     }
 
@@ -82,7 +81,7 @@ public class FilterFactoryTest {
     void build_shouldPropagateException_whenCurrencyIsInvalid() {
         Assertions.assertThrows(
                 IllegalArgumentException.class,
-                () -> factory.build("", "", "AAPL", "RANDOM STRING"),
+                () -> factory.build("", "", "", "RANDOM STRING"),
                 "Invalid currency input must trigger an exception");
     }
 }

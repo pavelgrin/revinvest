@@ -68,8 +68,7 @@ public final class Parser {
             float fxRate = parseFloat(fields[7]);
 
             logger.trace("[parseTransaction] {}", line);
-            return new Transaction(
-                    date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
+            return new Transaction(date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
 
         } catch (Exception error) {
             throw new RuntimeException("Skipped line due to invalid data", error);
