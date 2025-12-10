@@ -159,8 +159,8 @@ public final class ReportService {
                     String currency = t.currency();
 
                     if (filter.currency() == Currency.EUR) {
-                        pricePerShare /= t.fxRate();
-                        amount /= t.fxRate();
+                        pricePerShare *= t.fxRate();
+                        amount *= t.fxRate();
                         currency = Currency.EUR.getCode();
                     }
 
