@@ -55,8 +55,13 @@ public final class ReportService {
         if (filter.hasTicker()) {
             float buyAmount = this.getTotalAmount(buyTransactions);
             float sellAmount = this.getTotalAmount(sellTransactions);
+            float buyQuantity = this.getTotalQuantity(buyTransactions);
+            float sellQuantity = this.getTotalQuantity(sellTransactions);
+            float netAmount = buyAmount - sellAmount;
+            float quantity = netAmount > 0.0f ? buyQuantity - sellQuantity : 0.0f;
+            float bep = netAmount > 0.0f ? netAmount / quantity : 0.0f;
 
-            TickerSummary summary = new TickerSummary(buyAmount, sellAmount, buyAmount - sellAmount, 0.0f, 0.0f);
+            TickerSummary summary = new TickerSummary(buyAmount, sellAmount, netAmount, quantity, bep);
             logger.debug("[generate][TickerReport] summary: {}", summary);
 
             TickerReport tickerReport = new TickerReport();
