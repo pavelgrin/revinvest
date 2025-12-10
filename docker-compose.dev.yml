@@ -1,6 +1,11 @@
-version: "3.7"
+name: revinvest_dev
 services:
-    web:
+    webapp:
+        environment:
+            LOG_LEVEL: DEBUG # TRACE | DEBUG | INFO | WARN | ERROR | FATAL
+            JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+        ports:
+            - "${DEBUG_PORT}:5005"
         volumes:
-            - .:${WORK_DIR}:ro
-        command: npm run watch
+            - ./conf/dev_context.xml:/usr/local/tomcat/conf/Catalina/localhost/ROOT.xml
+            - ./target/classes:/usr/local/tomcat/dev_classes

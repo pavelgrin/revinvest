@@ -1,12 +1,17 @@
-version: "3.7"
+name: revinvest
 services:
-    web:
+    webapp:
+        image: revinvest_webapp:latest
         build:
             context: .
+            dockerfile: ./Dockerfile
             args:
-                WORK_DIR: ${WORK_DIR}
+                WAR_FILE: ${WAR_FILE_PATH}
+        container_name: revinvest_webapp
+        environment:
+            LOG_LEVEL: WARN # TRACE | DEBUG | INFO | WARN | ERROR | FATAL
+            DB_URL: ${DB_CONTAINER_PATH}
         ports:
-            - "${APP_PORT}:${APP_PORT}"
+            - "${APP_PORT}:8080"
         volumes:
-            - ./resources:${WORK_DIR}/resources:rw
-        command: npm run start
+            - "./${DB_HOST_PATH}:${DB_CONTAINER_PATH}"

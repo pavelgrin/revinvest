@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.1.0] - 2025-12-10
+
+-   Migration to JDK 21+ and Apache Tomcat, finalize core application rewrite to java
+
 ## [v1.0.0] - 2023-03-19
 
 ### Added
@@ -64,7 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Statement parser in CSV format
 -   Initial project
 
-[unreleased]: https://github.com/pavelgrin/revolut_investments/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/pavelgrin/revolut_investments/compare/v1.1.0...HEAD
+[v1.1.0]: https://github.com/pavelgrin/revolut_investments/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/pavelgrin/revolut_investments/compare/v0.7.0...v1.0.0
 [v0.7.0]: https://github.com/pavelgrin/revolut_investments/compare/v0.4.0...v0.7.0
 [v0.4.0]: https://github.com/pavelgrin/revolut_investments/compare/v0.1.0...v0.4.0
