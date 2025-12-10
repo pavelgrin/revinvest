@@ -1,6 +1,15 @@
 ## Revolut Investments Share Calculator
 
-This project provides a tool to calculate the results of buy/sell share transactions based on a **CSV file exported directly from the Revolut app**
+### Overview
+
+This project provides a tool to calculate the results of buy/sell share transactions based on a **CSV file exported
+directly from the Revolut app**
+
+---
+
+While the app solves a real financial problem, its primary purpose is educational. It serves as a
+comprehensive training exercise focused on mastering core java concepts, understanding the modern web application
+structure using a pure Java Servlet backend running on Apache Tomcat.
 
 ---
 
