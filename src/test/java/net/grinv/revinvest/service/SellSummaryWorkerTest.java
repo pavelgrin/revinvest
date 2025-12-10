@@ -1,7 +1,7 @@
 package net.grinv.revinvest.service;
 
+import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.SellSummary;
 import net.grinv.revinvest.model.Transaction;
@@ -10,12 +10,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class SellSummaryWorkerTest {
-    private Queue<Transaction> inventory;
+    private Deque<Transaction> inventory;
 
     @BeforeEach
     void setUp() {
-        Transaction buyTransaction1 = new Transaction("", 1L, "", Type.Buy, 10.0f, 1.0f, 10.0f, "", 1.0f);
-        Transaction buyTransaction2 = new Transaction("", 2L, "", Type.Buy, 10.0f, 2.0f, 20.0f, "", 1.0f);
+        Transaction buyTransaction1 = new Transaction("", 1L, "A", Type.Buy, 10.0f, 1.0f, 10.0f, "", 1.0f);
+        Transaction buyTransaction2 = new Transaction("", 2L, "B", Type.Buy, 10.0f, 2.0f, 20.0f, "", 1.0f);
 
         this.inventory = new LinkedList<>();
         this.inventory.offer(buyTransaction1);
@@ -24,7 +24,7 @@ public class SellSummaryWorkerTest {
 
     @Test
     void getNext_shouldConsumeFullLotAndCalculatePnl() {
-        Transaction sellTransaction = new Transaction("", 3L, "", Type.Sell, 10.0f, 3.0f, 30.0f, "", 1.0f);
+        Transaction sellTransaction = new Transaction("", 3L, "A", Type.Sell, 10.0f, 3.0f, 30.0f, "", 1.0f);
         SellSummaryWorker worker = new SellSummaryWorker(this.inventory);
         SellSummary summary = worker.getNext(sellTransaction);
 
@@ -45,21 +45,18 @@ public class SellSummaryWorkerTest {
     }
 
     @Test
-    void getNext_shouldPartiallyConsumeLotAndLeaveRemainder() {
-        Transaction sellTransaction = new Transaction("", 3L, "", Type.Sell, 5.0f, 3.0f, 15.0f, "", 1.0f);
+    void getNext_shouldPartiallyConsumeProperLotAndLeaveRemainder() {
+        Transaction sellTransaction = new Transaction("", 3L, "B", Type.Sell, 5.0f, 3.0f, 15.0f, "", 1.0f);
         SellSummaryWorker worker = new SellSummaryWorker(this.inventory);
         worker.getNext(sellTransaction);
 
-        Assertions.assertEquals(2, this.inventory.size(), "Inventory size must remain 2 (updated lot + second lot)");
+        Assertions.assertEquals(2, this.inventory.size(), "Inventory size must remain 2 (first lot + updated lot)");
 
         Transaction firstLot = this.inventory.poll();
         Transaction secondLot = this.inventory.poll();
 
-        Assertions.assertEquals(5.0f, firstLot.quantity(), 0.01f, "Remaining shares in the first lot must be 5");
-        Assertions.assertEquals(
-                10f,
-                secondLot.quantity(),
-                0.01f,
-                "The second lot must be untouched and still be in the second position");
+        Assertions.assertEquals("A", firstLot.ticker(), "The first lot must be in the first position");
+        Assertions.assertEquals(10.0f, firstLot.quantity(), 0.01f, "The first lot must be untouched");
+        Assertions.assertEquals(5.0f, secondLot.quantity(), 0.01f, "Remaining shares in the second lot must be 5");
     }
 }
