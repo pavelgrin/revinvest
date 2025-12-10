@@ -9,25 +9,25 @@
             <jsp:include page="filter_form.jsp" />
             <div class="summaryRow">
                 <div class="summaryLabel">Balance</div>
-                <div class="summaryValue">${report.commonReport.balanceFixed}</div>
+                <div class="summaryValue">${report.commonReport.getBalanceFixed}</div>
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Dividends</div>
                 <div class="summaryValue">
-                    gross: ${report.commonReport.dividends.getWithTaxFixed} /
-                    net: ${report.commonReport.dividends.getAmountFixed} /
-                    tax: ${report.commonReport.dividends.getTaxFixed}
+                    gross: ${report.commonReport.getDividends.getWithTaxFixed} /
+                    net: ${report.commonReport.getDividends.getAmountFixed} /
+                    tax: ${report.commonReport.getDividends.getTaxFixed}
                 </div>
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Custody Fee</div>
-                <div class="summaryValue">${report.commonReport.custodyFeeFixed}</div>
+                <div class="summaryValue">${report.commonReport.getCustodyFeeFixed}</div>
             </div>
             <div class="summaryRow">
                 <div class="summaryLabel">Total (by sells)</div>
                 <div class="summaryValue">
-                    FIFO: ${report.commonReport.totalFIFOFixed} /
-                    LIFO: ${report.commonReport.totalLIFOFixed}
+                    FIFO: ${report.commonReport.getTotalFIFOFixed} /
+                    LIFO: ${report.commonReport.getTotalLIFOFixed}
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
         <th class="secondRowHeader">FIFO</th>
         <th class="secondRowHeader">LIFO</th>
     </tr>
-    <c:forEach var="item" items="${report.commonReport.summaryFIFO}" varStatus="status">
+    <c:forEach var="item" items="${report.commonReport.getSummaryFIFO}" varStatus="status">
     <tr>
         <td class="date">${item.date}</td>
         <td>
@@ -57,10 +57,10 @@
         </td>
         <td>${item.getQuantityFixed}</td>
         <td>${item.getCostBasisFixed}</td>
-        <td>${report.commonReport.summaryLIFO[status.index].getCostBasisFixed}</td>
+        <td>${report.commonReport.getSummaryLIFO[status.index].getCostBasisFixed}</td>
         <td>${item.getGrossProceedsFixed}</td>
         <td>${item.getPnlFixed}</td>
-        <td>${report.commonReport.summaryLIFO[status.index].getPnlFixed}</td>
+        <td>${report.commonReport.getSummaryLIFO[status.index].getPnlFixed}</td>
     </tr>
     </c:forEach>
 </table>

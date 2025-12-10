@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.List;
 import net.grinv.revinvest.model.Transaction;
 import net.grinv.revinvest.repository.TransactionRepository;
-import net.grinv.revinvest.utils.Parser;
+import net.grinv.revinvest.service.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +22,11 @@ public final class UpdateServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(UpdateServlet.class);
 
     private final TransactionRepository transactionRepository;
+    private final Parser parser;
 
     public UpdateServlet() {
         this.transactionRepository = new TransactionRepository();
+        this.parser = new Parser();
     }
 
     @Override
@@ -36,7 +38,7 @@ public final class UpdateServlet extends HttpServlet {
             }
 
             try (InputStream inputStream = filePart.getInputStream()) {
-                List<Transaction> transactions = Parser.parseCSVReport(inputStream);
+                List<Transaction> transactions = this.parser.parseCSVReport(inputStream);
                 if (transactions.isEmpty()) {
                     throw new RuntimeException("The CSV file doesn't contain transaction records");
                 }

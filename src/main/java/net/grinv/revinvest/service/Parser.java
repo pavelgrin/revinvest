@@ -1,4 +1,4 @@
-package net.grinv.revinvest.utils;
+package net.grinv.revinvest.service;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import net.grinv.revinvest.consts.Type;
 import net.grinv.revinvest.model.Transaction;
+import net.grinv.revinvest.utils.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class Parser {
     private static final Logger logger = LoggerFactory.getLogger(Parser.class);
 
-    public static List<Transaction> parseCSVReport(InputStream inputStream) {
+    public List<Transaction> parseCSVReport(InputStream inputStream) {
         List<Transaction> transactions = new ArrayList<>();
 
         if (inputStream == null) {
@@ -25,7 +26,7 @@ public final class Parser {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                Transaction t = parseTransaction(line);
+                Transaction t = this.parseTransaction(line);
                 transactions.add(t);
             }
         } catch (Exception error) {
@@ -45,7 +46,7 @@ public final class Parser {
      * <p>Date is in ISO format: {@code 1970-01-01T00:00:00.000[000]Z}<br>
      * FX Rate is the exchange rate, for example USD to EUR
      */
-    private static Transaction parseTransaction(String line) {
+    private Transaction parseTransaction(String line) {
         String[] fields = line.split(",");
 
         if (fields.length < 8) {
@@ -59,13 +60,13 @@ public final class Parser {
             String ticker = fields[1].isBlank() ? null : fields[1].trim();
             Type type = Type.getTypeByString(fields[2].trim());
 
-            float quantity = parseFloat(fields[3]);
-            float pricePerShare = parseFloat(fields[4]);
-            float amount = parseFloat(fields[5]);
+            float quantity = this.parseFloat(fields[3]);
+            float pricePerShare = this.parseFloat(fields[4]);
+            float amount = this.parseFloat(fields[5]);
 
             String currency = fields[6].trim();
 
-            float fxRate = parseFloat(fields[7]);
+            float fxRate = this.parseFloat(fields[7]);
 
             logger.trace("[parseTransaction] {}", line);
             return new Transaction(date, timestamp, ticker, type, quantity, pricePerShare, amount, currency, fxRate);
@@ -80,7 +81,7 @@ public final class Parser {
      *
      * <p>This method is resistant to currency symbols (e.g. "USD 99.99") and extraneous spaces
      */
-    private static float parseFloat(String value) {
+    private float parseFloat(String value) {
         String numericString = value.replaceAll("[^\\d.-]", "");
         if (numericString.isBlank()) {
             return 0.0f;

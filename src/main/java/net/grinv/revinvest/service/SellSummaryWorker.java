@@ -15,7 +15,7 @@ public class SellSummaryWorker {
         this.inventory = inventory;
     }
 
-    /** Calculates the realized capital gain for a single sale and consumes the necessary lots from buyTransactions */
+    /** Calculates the realized capital gain for a single sale and consumes the necessary lots from inventory */
     public SellSummary getNext(Transaction sell) {
         logger.trace("[getNext] Sell: {}", sell);
 

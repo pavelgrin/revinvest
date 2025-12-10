@@ -10,6 +10,8 @@ import net.grinv.revinvest.model.Report;
 import net.grinv.revinvest.repository.TransactionRepository;
 import net.grinv.revinvest.service.FilterFactory;
 import net.grinv.revinvest.service.ReportService;
+import net.grinv.revinvest.service.SummaryCalculator;
+import net.grinv.revinvest.service.TransactionNormalizer;
 import net.grinv.revinvest.utils.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,10 @@ public final class IndexServlet extends HttpServlet {
 
     public IndexServlet() {
         TransactionRepository repo = new TransactionRepository();
-        this.reportService = new ReportService(repo);
+        SummaryCalculator calculator = new SummaryCalculator();
+        TransactionNormalizer transactionNormalizer = new TransactionNormalizer();
+
+        this.reportService = new ReportService(repo, calculator, transactionNormalizer);
         this.filterFactory = new FilterFactory(repo);
     }
 
